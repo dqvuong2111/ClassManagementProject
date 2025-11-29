@@ -1,0 +1,45 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Welcome to EduPlatform{% endblock %}
+
+{% block content %}
+<!-- ... Hero Section không đổi ... -->
+<section class="hero-section text-center">
+    <div class="container">
+        <h1>Unlock Your Potential with Our Courses</h1>
+        <p>
+            Discover a world of knowledge with expert-led courses designed to help you succeed in your career and personal growth.
+        </p>
+        <a href="{% url 'class_list' %}" class="btn btn-primary-custom btn-lg mt-3">Browse All Courses</a>
+    </div>
+</section>
+
+<!-- Main content area -->
+<div class="container" style="margin-top: -80px; position: relative; z-index: 10;">
+    <div class="row">
+        <!-- Bắt đầu vòng lặp ở đây -->
+        {% for clazz in classes %}
+        <div class="col-lg-4 col-md-6 mb-4">
+            <div class="course-card">
+                <!-- Sử dụng ảnh từ database -->
+                {% if clazz.image %}
+                    <img src="{{ clazz.image.url }}" class="card-img-top" alt="{{ clazz.class_name }}">
+                {% else %}
+                    <img src="{% static 'images/default_class.jpg' %}" class="card-img-top" alt="Default Image">
+                {% endif %}
+                <div class="card-body">
+                    <h5 class="card-title">{{ clazz.class_name }}</h5>
+                    <p class="card-text">A high-quality course to improve your skills and knowledge.</p> <!-- Mô tả tạm thời -->
+                </div>
+                <div class="card-footer">
+                    <span>Teacher: {{ clazz.teacher.full_name|default:"N/A" }}</span>
+                    <strong>${{ clazz.price|floatformat:0 }}</strong>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+        <!-- Kết thúc vòng lặp ở đây -->
+    </div>
+</div>
+{% endblock %}

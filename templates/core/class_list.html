@@ -1,0 +1,48 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}All Courses - EduPlatform{% endblock %}
+
+{% block content %}
+<div class="container py-5">
+    <!-- Page Header -->
+    <div class="row text-center mb-5">
+        <div class="col-lg-8 mx-auto">
+            <h1 class="display-5 fw-bold">Explore Our Courses</h1>
+            <p class="text-muted fs-5">Find the perfect course to advance your skills and career.</p>
+        </div>
+    </div>
+
+    <!-- Class List -->
+    <div class="row">
+        {% if classes %}
+            {% for clazz in classes %}
+            <div class="col-lg-4 col-md-6 mb-4">
+                <!-- Thẻ a này làm cho toàn bộ card có thể click được -->
+                <a href="{% url 'class_detail' pk=clazz.pk %}" class="text-decoration-none">
+                    <div class="course-card h-100">
+                        {% if clazz.image %}
+                            <img src="{{ clazz.image.url }}" class="card-img-top" alt="{{ clazz.class_name }}">
+                        {% else %}
+                            <img src="{% static 'images/default_class.jpg' %}" class="card-img-top" alt="Default Image">
+                        {% endif %}
+                        <div class="card-body">
+                            <h5 class="card-title">{{ clazz.class_name }}</h5>
+                            <p class="card-text">A high-quality course to improve your skills and knowledge.</p>
+                        </div>
+                        <div class="card-footer">
+                            <span>Teacher: {{ clazz.teacher.full_name|default:"N/A" }}</span>
+                            <strong>${{ clazz.price|floatformat:0 }}</strong>
+                        </div>
+                    </div>
+                </a>
+            </div>
+            {% endfor %}
+        {% else %}
+            <div class="col-12 text-center">
+                <p class="fs-4 text-muted">No classes available at the moment. Please check back later.</p>
+            </div>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}

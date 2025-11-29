@@ -1,0 +1,60 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}{{ clazz.class_name }} - EduPlatform{% endblock %}
+
+{% block content %}
+<div class="container py-5">
+    <div class="row">
+        <!-- Cột trái: Ảnh và thông tin chính -->
+        <div class="col-lg-8">
+            <div class="course-card mb-4 p-4">
+                <h1 class="mb-3">{{ clazz.class_name }}</h1>
+                {% if clazz.image %}
+                    <img src="{{ clazz.image.url }}" class="img-fluid rounded mb-4" alt="{{ clazz.class_name }}">
+                {% else %}
+                    <img src="{% static 'images/default_class.jpg' %}" class="img-fluid rounded mb-4" alt="Default Image">
+                {% endif %}
+                
+                <h4>Mô tả khóa học</h4>
+                <p>Khóa học này được dẫn dắt bởi giảng viên {{ clazz.teacher.full_name|default:"N/A" }}, bao gồm các chủ đề thiết yếu để giúp bạn nắm vững kiến thức. Loại lớp học: '{{ clazz.class_type.code }}'. Hãy tham gia cùng chúng tôi để nâng cao kỹ năng của bạn.</p>
+            </div>
+
+            <!-- Danh sách học viên đã đăng ký -->
+            <div class="course-card p-4">
+                 <h4 class="mb-3">Học viên đã đăng ký ({{ enrollments.count }})</h4>
+                    {% if enrollments %}
+                        <ul class="list-group list-group-flush">
+                            {% for enrollment in enrollments %}
+                                <li class="list-group-item">{{ enrollment.student.full_name }}</li>
+                            {% endfor %}
+                        </ul>
+                    {% else %}
+                        <p class="text-muted">Hiện chưa có học viên nào đăng ký lớp này.</p>
+                    {% endif %}
+            </div>
+        </div>
+
+        <!-- Cột phải: Thông tin nhanh -->
+        <div class="col-lg-4">
+            <div class="course-card p-4">
+                <h4 class="mb-3">Thông tin nhanh</h4>
+                <ul class="list-unstyled">
+                    <li class="mb-3"><strong>Giá:</strong> <span class="badge bg-success fs-6">${{ clazz.price|floatformat:2 }}</span></li>
+                    <li class="mb-2"><strong>Giảng viên:</strong> {{ clazz.teacher.full_name|default:"Chưa có" }}</li>
+                    <li class="mb-2"><strong>Phòng học:</strong> {{ clazz.room }}</li>
+                    <li class="mb-2"><strong>Ngày bắt đầu:</strong> {{ clazz.start_date }}</li>
+                    <li class="mb-2"><strong>Ngày kết thúc:</strong> {{ clazz.end_date }}</li>
+                    {% if clazz.schedule %}
+                    <li class="mb-2"><strong>Lịch học:</strong> {{ clazz.schedule.get_day_of_week_display }}</li>
+                    <li class="mb-2"><strong>Thời gian:</strong> {{ clazz.schedule.start_time|time:"H:i" }} - {{ clazz.schedule.end_time|time:"H:i" }}</li>
+                    {% endif %}
+                </ul>
+                <div class="d-grid mt-4">
+                    <a href="#" class="btn btn-primary-custom">Đăng ký ngay</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

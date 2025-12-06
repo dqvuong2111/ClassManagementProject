@@ -1,0 +1,96 @@
+{% extends 'dashboard/base_dashboard.html' %}
+
+{% block content %}
+<div class="max-w-7xl mx-auto">
+    <div class="mb-8">
+        <h1 class="text-2xl font-bold text-gray-900">Statistics & Analytics</h1>
+        <p class="text-gray-500">Overview of school performance and data.</p>
+    </div>
+
+    <!-- Key Metrics -->
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
+        <div class="bg-white p-6 rounded-xl border border-gray-200 shadow-sm">
+            <div class="flex items-center justify-between mb-4">
+                <div class="h-10 w-10 bg-indigo-100 rounded-lg flex items-center justify-center text-indigo-600">
+                    <i data-lucide="users" class="h-5 w-5"></i>
+                </div>
+            </div>
+            <h3 class="text-2xl font-bold text-gray-900">{{ total_students }}</h3>
+            <p class="text-sm text-gray-500">Total Students</p>
+        </div>
+
+        <div class="bg-white p-6 rounded-xl border border-gray-200 shadow-sm">
+            <div class="flex items-center justify-between mb-4">
+                <div class="h-10 w-10 bg-emerald-100 rounded-lg flex items-center justify-center text-emerald-600">
+                    <i data-lucide="user-check" class="h-5 w-5"></i>
+                </div>
+            </div>
+            <h3 class="text-2xl font-bold text-gray-900">{{ total_teachers }}</h3>
+            <p class="text-sm text-gray-500">Total Teachers</p>
+        </div>
+
+        <div class="bg-white p-6 rounded-xl border border-gray-200 shadow-sm">
+            <div class="flex items-center justify-between mb-4">
+                <div class="h-10 w-10 bg-amber-100 rounded-lg flex items-center justify-center text-amber-600">
+                    <i data-lucide="book-open" class="h-5 w-5"></i>
+                </div>
+            </div>
+            <h3 class="text-2xl font-bold text-gray-900">{{ total_classes }}</h3>
+            <p class="text-sm text-gray-500">Active Classes</p>
+        </div>
+
+        <div class="bg-white p-6 rounded-xl border border-gray-200 shadow-sm">
+            <div class="flex items-center justify-between mb-4">
+                <div class="h-10 w-10 bg-purple-100 rounded-lg flex items-center justify-center text-purple-600">
+                    <i data-lucide="graduation-cap" class="h-5 w-5"></i>
+                </div>
+            </div>
+            <h3 class="text-2xl font-bold text-gray-900">{{ total_enrollments }}</h3>
+            <p class="text-sm text-gray-500">Total Enrollments</p>
+        </div>
+    </div>
+
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+        <!-- Class Distribution -->
+        <div class="bg-white rounded-xl border border-gray-200 shadow-sm p-6">
+            <h3 class="text-lg font-bold text-gray-900 mb-4">Class Distribution by Type</h3>
+            <div class="space-y-4">
+                {% for item in class_distribution %}
+                <div>
+                    <div class="flex justify-between text-sm mb-1">
+                        <span class="font-medium text-gray-700">{{ item.class_type__code }}</span>
+                        <span class="text-gray-500">{{ item.count }} classes</span>
+                    </div>
+                    <div class="w-full bg-gray-200 rounded-full h-2">
+                        <div class="bg-indigo-600 h-2 rounded-full" style="width: {{ item.count }}0%"></div>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+
+        <!-- Recent Enrollments -->
+        <div class="bg-white rounded-xl border border-gray-200 shadow-sm p-6">
+            <h3 class="text-lg font-bold text-gray-900 mb-4">Recent Enrollments</h3>
+            <div class="space-y-4">
+                {% for enrollment in recent_enrollments %}
+                <div class="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
+                    <div class="flex items-center gap-3">
+                        <div class="h-8 w-8 rounded-full bg-indigo-100 flex items-center justify-center text-indigo-600 font-bold text-xs">
+                            {{ enrollment.student.full_name|slice:":2"|upper }}
+                        </div>
+                        <div>
+                            <p class="text-sm font-medium text-gray-900">{{ enrollment.student.full_name }}</p>
+                            <p class="text-xs text-gray-500">{{ enrollment.clazz.class_name }}</p>
+                        </div>
+                    </div>
+                    <span class="text-xs text-gray-400">{{ enrollment.enrollment_date|date:"M d" }}</span>
+                </div>
+                {% empty %}
+                <p class="text-sm text-gray-500 text-center py-4">No recent enrollments.</p>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

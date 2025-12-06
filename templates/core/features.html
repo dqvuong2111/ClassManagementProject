@@ -1,38 +1,88 @@
 {% extends 'base.html' %}
-{% block title %}Features - Classroom AI{% endblock %}
+{% block title %}Features - EduManage{% endblock %}
 
 {% block content %}
 <div class="container mt-5">
     <div class="text-center mb-5">
-        <h1 class="display-4">Our Features</h1>
-        <p class="lead">Discover the powerful features that make Classroom AI the best choice for managing your classes.</p>
+        <h1 class="display-4 fw-bold">Comprehensive Education Management</h1>
+        <p class="lead text-muted">Empowering schools with smart, efficient, and easy-to-use tools.</p>
     </div>
 
-    <div class="row">
-        <div class="col-md-4 mb-4">
-            <div class="card h-100 shadow-sm">
-                <div class="card-body text-center">
-                    <i class="fas fa-cogs fa-3x text-primary mb-3"></i>
-                    <h5 class="card-title">Advanced Class Management</h5>
-                    <p class="card-text">Easily create, update, and manage your classes with our intuitive interface.</p>
+    <div class="row g-4">
+        <!-- Feature 1 -->
+        <div class="col-md-4">
+            <div class="card h-100 border-0 shadow-sm hover-shadow transition">
+                <div class="card-body text-center p-4">
+                    <div class="feature-icon bg-primary bg-opacity-10 text-primary rounded-circle mb-3 mx-auto d-flex align-items-center justify-content-center" style="width: 64px; height: 64px;">
+                        <i class="fas fa-chalkboard-teacher fa-2x"></i>
+                    </div>
+                    <h5 class="card-title fw-bold">Class & Course Management</h5>
+                    <p class="card-text text-muted">Effortlessly create classes, assign teachers, and manage schedules. Keep track of course types and availability in real-time.</p>
                 </div>
             </div>
         </div>
-        <div class="col-md-4 mb-4">
-            <div class="card h-100 shadow-sm">
-                <div class="card-body text-center">
-                    <i class="fas fa-user-check fa-3x text-success mb-3"></i>
-                    <h5 class="card-title">Automated Attendance</h5>
-                    <p class="card-text">Track student attendance with our smart, automated system.</p>
+
+        <!-- Feature 2 -->
+        <div class="col-md-4">
+            <div class="card h-100 border-0 shadow-sm hover-shadow transition">
+                <div class="card-body text-center p-4">
+                    <div class="feature-icon bg-success bg-opacity-10 text-success rounded-circle mb-3 mx-auto d-flex align-items-center justify-content-center" style="width: 64px; height: 64px;">
+                        <i class="fas fa-user-graduate fa-2x"></i>
+                    </div>
+                    <h5 class="card-title fw-bold">Student Lifecycle</h5>
+                    <p class="card-text text-muted">From enrollment to graduation, manage student profiles, track academic progress, and maintain detailed records securely.</p>
                 </div>
             </div>
         </div>
-        <div class="col-md-4 mb-4">
-            <div class="card h-100 shadow-sm">
-                <div class="card-body text-center">
-                    <i class="fas fa-chart-line fa-3x text-info mb-3"></i>
-                    <h5 class="card-title">Progress Tracking</h5>
-                    <p class="card-text">Monitor student performance with detailed analytics and reports.</p>
+
+        <!-- Feature 3 -->
+        <div class="col-md-4">
+            <div class="card h-100 border-0 shadow-sm hover-shadow transition">
+                <div class="card-body text-center p-4">
+                    <div class="feature-icon bg-info bg-opacity-10 text-info rounded-circle mb-3 mx-auto d-flex align-items-center justify-content-center" style="width: 64px; height: 64px;">
+                        <i class="fas fa-chart-pie fa-2x"></i>
+                    </div>
+                    <h5 class="card-title fw-bold">Analytics & Reporting</h5>
+                    <p class="card-text text-muted">Gain insights into school performance with visual dashboards. Track enrollment trends, attendance rates, and financial overviews.</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Feature 4 -->
+        <div class="col-md-4">
+            <div class="card h-100 border-0 shadow-sm hover-shadow transition">
+                <div class="card-body text-center p-4">
+                    <div class="feature-icon bg-warning bg-opacity-10 text-warning rounded-circle mb-3 mx-auto d-flex align-items-center justify-content-center" style="width: 64px; height: 64px;">
+                        <i class="fas fa-clock fa-2x"></i>
+                    </div>
+                    <h5 class="card-title fw-bold">Smart Scheduling</h5>
+                    <p class="card-text text-muted">Avoid conflicts with our intelligent scheduling system. manage recurring classes, holidays, and room allocations with ease.</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Feature 5 -->
+        <div class="col-md-4">
+            <div class="card h-100 border-0 shadow-sm hover-shadow transition">
+                <div class="card-body text-center p-4">
+                    <div class="feature-icon bg-danger bg-opacity-10 text-danger rounded-circle mb-3 mx-auto d-flex align-items-center justify-content-center" style="width: 64px; height: 64px;">
+                        <i class="fas fa-file-alt fa-2x"></i>
+                    </div>
+                    <h5 class="card-title fw-bold">Document Center</h5>
+                    <p class="card-text text-muted">Centralized repository for school policies, academic calendars, and administrative documents. accessible to authorized staff.</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Feature 6 -->
+        <div class="col-md-4">
+            <div class="card h-100 border-0 shadow-sm hover-shadow transition">
+                <div class="card-body text-center p-4">
+                    <div class="feature-icon bg-purple bg-opacity-10 text-purple rounded-circle mb-3 mx-auto d-flex align-items-center justify-content-center" style="width: 64px; height: 64px;">
+                        <i class="fas fa-users fa-2x"></i>
+                    </div>
+                    <h5 class="card-title fw-bold">Teacher & Staff Portal</h5>
+                    <p class="card-text text-muted">Dedicated tools for teachers to mark attendance, view schedules, and manage their assigned classes efficiently.</p>
                 </div>
             </div>
         </div>

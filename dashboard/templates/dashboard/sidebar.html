@@ -7,7 +7,7 @@
                 <i data-lucide="sparkles" class="h-5 w-5 text-white"></i>
             </div>
             <div>
-                <h1 class="font-semibold text-gray-900">Classroom AI</h1>
+                <h1 class="font-semibold text-gray-900">EduManage</h1>
                 <p class="text-xs text-gray-500">Admin Dashboard</p>
             </div>
         </div>
@@ -45,15 +45,21 @@
             Class Types
         </a>
         
-        <!-- Placeholder links for other features from giaovienai -->
-        <a href="#" class="flex items-center gap-3 rounded-xl px-4 py-3 text-sm font-medium transition-colors text-gray-600 hover:bg-gray-50 hover:text-gray-900">
+        <a href="{% url 'dashboard:admin_documents' %}" class="flex items-center gap-3 rounded-xl px-4 py-3 text-sm font-medium transition-colors {% if 'documents' in request.path %}bg-indigo-50 text-indigo-600{% else %}text-gray-600 hover:bg-gray-50 hover:text-gray-900{% endif %}">
             <i data-lucide="file-text" class="h-5 w-5"></i>
             Documents
         </a>
         
-        <a href="#" class="flex items-center gap-3 rounded-xl px-4 py-3 text-sm font-medium transition-colors text-gray-600 hover:bg-gray-50 hover:text-gray-900">
+        <a href="{% url 'dashboard:admin_statistics' %}" class="flex items-center gap-3 rounded-xl px-4 py-3 text-sm font-medium transition-colors {% if 'statistics' in request.path %}bg-indigo-50 text-indigo-600{% else %}text-gray-600 hover:bg-gray-50 hover:text-gray-900{% endif %}">
             <i data-lucide="bar-chart" class="h-5 w-5"></i>
             Statistics
+        </a>
+
+        <div class="my-2 border-t border-gray-100"></div>
+
+        <a href="{% url 'home' %}" class="flex items-center gap-3 rounded-xl px-4 py-3 text-sm font-medium transition-colors text-gray-600 hover:bg-gray-50 hover:text-gray-900">
+            <i data-lucide="home" class="h-5 w-5"></i>
+            Back to Home
         </a>
     </nav>
 

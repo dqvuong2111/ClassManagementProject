@@ -39,6 +39,44 @@ def admin_dashboard_view(request):
     return render(request, 'dashboard/dashboard.html', context)
 
 @login_required
+@user_passes_test(is_staff_user, login_url="accounts:login")
+def admin_documents_view(request):
+    # Placeholder for documents logic. 
+    # In a real app, this would query a Document model.
+    documents = [
+        {'title': 'School Policy 2025', 'type': 'PDF', 'date': '2025-01-15'},
+        {'title': 'Academic Calendar', 'type': 'PDF', 'date': '2025-01-20'},
+        {'title': 'Teacher Handbook', 'type': 'DOCX', 'date': '2024-12-10'},
+        {'title': 'Student Code of Conduct', 'type': 'PDF', 'date': '2024-09-01'},
+    ]
+    return render(request, 'dashboard/documents.html', {'documents': documents})
+
+@login_required
+@user_passes_test(is_staff_user, login_url="accounts:login")
+def admin_statistics_view(request):
+    total_students = Student.objects.count()
+    total_teachers = Teacher.objects.count()
+    total_classes = Clazz.objects.count()
+    total_enrollments = Enrollment.objects.count()
+    
+    # Get enrollment growth (last 6 months) - simplified for demo
+    # In a real app, use TruncMonth and proper aggregation
+    recent_enrollments = Enrollment.objects.order_by('-enrollment_date')[:5]
+    
+    # Class distribution by type
+    class_distribution = Clazz.objects.values('class_type__code').annotate(count=Count('class_id'))
+    
+    context = {
+        'total_students': total_students,
+        'total_teachers': total_teachers,
+        'total_classes': total_classes,
+        'total_enrollments': total_enrollments,
+        'recent_enrollments': recent_enrollments,
+        'class_distribution': class_distribution,
+    }
+    return render(request, 'dashboard/statistics.html', context)
+
+@login_required
 def student_dashboard_view(request):
     try:
         student = request.user.student

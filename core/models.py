@@ -77,6 +77,8 @@ class Enrollment(models.Model):
     student = models.ForeignKey(Student, on_delete=models.CASCADE, related_name="enrollments", verbose_name="Student")
     clazz = models.ForeignKey(Clazz, on_delete=models.CASCADE, related_name="enrollments", verbose_name="Class")
     enrollment_date = models.DateField(default=timezone.now, verbose_name="Enrollment Date")
+    status = models.CharField(max_length=20, choices=[('pending', 'Pending'), ('approved', 'Approved'), ('rejected', 'Rejected')], default='pending', verbose_name="Status")
+    is_paid = models.BooleanField(default=False, verbose_name="Payment Status")
     # Scores
     minitest1 = models.FloatField(null=True, blank=True, verbose_name="Mini Test 1 Score")
     minitest2 = models.FloatField(null=True, blank=True, verbose_name="Mini Test 2 Score")

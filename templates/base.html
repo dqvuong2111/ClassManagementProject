@@ -35,10 +35,10 @@
                     </ul>
                     <div class="d-flex align-items-center gap-2">
                         {% if user.is_authenticated %}
+                            <span class="me-3 text-muted">Hello, {{ user.username }}</span>
                             <a href="{% url 'dashboard:dashboard' %}" class="btn btn-outline-primary-custom btn-sm me-2">
                                 Dashboard
                             </a>
-                            <span class="me-2 text-muted">Hello, {{ user.username }}</span>
                             <form action="{% url 'accounts:logout' %}" method="post" class="d-inline">
                                 {% csrf_token %}
                                 <button type="submit" class="btn btn-outline-primary-custom btn-sm">

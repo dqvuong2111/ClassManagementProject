@@ -28,6 +28,7 @@ def admin_dashboard_view(request):
     total_classes = Clazz.objects.count()
     total_students = Student.objects.count()
     total_teachers = Teacher.objects.count()
+    pending_requests_count = Enrollment.objects.filter(status='pending').count()
 
     context = {
         'classes': classes,
@@ -35,6 +36,7 @@ def admin_dashboard_view(request):
         'total_classes': total_classes,
         'total_students': total_students,
         'total_teachers': total_teachers,
+        'pending_requests_count': pending_requests_count,
     }
     return render(request, 'dashboard/dashboard.html', context)
 
@@ -115,6 +117,17 @@ def student_schedule_view(request):
     schedules = Schedule.objects.filter(clazz__enrollments__student=student).distinct()
 
     return render(request, 'dashboard/student_schedule.html', {'student': student, 'schedules': schedules})
+
+@login_required
+def student_pending_requests_view(request):
+    try:
+        student = request.user.student
+    except Student.DoesNotExist:
+        messages.error(request, "You are not registered as a student.")
+        return redirect('home')
+    
+    pending_enrollments = student.enrollments.filter(status='pending')
+    return render(request, 'dashboard/student_pending.html', {'student': student, 'enrollments': pending_enrollments})
 
 @login_required
 def student_achievements_view(request):
@@ -268,15 +281,47 @@ def delete_teacher_view(request, pk):
 @user_passes_test(is_staff_user, login_url="accounts:login")
 def manage_enrollments_view(request):
     query = request.GET.get('q')
-    enrollments = Enrollment.objects.all()
+    
+    # Base querysets
+    active_enrollments = Enrollment.objects.filter(status='approved').select_related('student', 'clazz')
+    pending_requests = Enrollment.objects.filter(status='pending').select_related('student', 'clazz')
 
     if query:
-        enrollments = enrollments.filter(
-            Q(student__full_name__icontains=query) |
-            Q(clazz__class_name__icontains=query)
-        )
+        # Apply search to both
+        search_filter = Q(student__full_name__icontains=query) | Q(clazz__class_name__icontains=query)
+        active_enrollments = active_enrollments.filter(search_filter)
+        pending_requests = pending_requests.filter(search_filter)
 
-    return render(request, 'dashboard/manage_enrollments.html', {'enrollments': enrollments, 'query': query})
+    return render(request, 'dashboard/manage_enrollments.html', {
+        'active_enrollments': active_enrollments, 
+        'pending_requests': pending_requests,
+        'query': query
+    })
+
+@login_required
+@user_passes_test(is_staff_user, login_url="accounts:login")
+def manage_requests_view(request):
+    requests = Enrollment.objects.filter(status='pending').select_related('student', 'clazz')
+    return render(request, 'dashboard/manage_requests.html', {'requests': requests})
+
+@login_required
+@user_passes_test(is_staff_user, login_url="accounts:login")
+def approve_request_view(request, pk):
+    enrollment = get_object_or_404(Enrollment, pk=pk)
+    enrollment.status = 'approved'
+    enrollment.is_paid = True # Auto-mark as paid upon approval
+    enrollment.save()
+    messages.success(request, f"Enrollment for {enrollment.student.full_name} approved and payment verified.")
+    return redirect('dashboard:manage_enrollments')
+
+@login_required
+@user_passes_test(is_staff_user, login_url="accounts:login")
+def reject_request_view(request, pk):
+    enrollment = get_object_or_404(Enrollment, pk=pk)
+    enrollment.status = 'rejected'
+    enrollment.save()
+    messages.warning(request, f"Enrollment for {enrollment.student.full_name} rejected.")
+    return redirect('dashboard:manage_enrollments')
 
 @login_required
 @user_passes_test(is_staff_user, login_url="accounts:login")

@@ -22,7 +22,7 @@
 
         <a href="{% url 'dashboard:manage_enrollments' %}" class="flex items-center gap-3 rounded-xl px-4 py-3 text-sm font-medium transition-colors {% if 'enrollment' in request.path %}bg-indigo-50 text-indigo-600{% else %}text-gray-600 hover:bg-gray-50 hover:text-gray-900{% endif %}">
             <i data-lucide="users" class="h-5 w-5"></i>
-            Enrollments
+            Enrollment Manager
         </a>
 
         <a href="{% url 'dashboard:manage_students' %}" class="flex items-center gap-3 rounded-xl px-4 py-3 text-sm font-medium transition-colors {% if 'student' in request.path and 'enrollment' not in request.path %}bg-indigo-50 text-indigo-600{% else %}text-gray-600 hover:bg-gray-50 hover:text-gray-900{% endif %}">

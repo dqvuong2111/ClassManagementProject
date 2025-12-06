@@ -55,7 +55,7 @@
             </div>
         </a>
 
-        <!-- Enrollments/Pending Card (Placeholder) -->
+        <!-- Pending Requests Card -->
         <a href="{% url 'dashboard:manage_enrollments' %}" class="block">
             <div class="bg-white rounded-xl border border-gray-200 p-4 shadow-sm hover:shadow-md transition-shadow h-full">
                 <div class="flex items-center gap-4">
@@ -63,8 +63,8 @@
                         <i data-lucide="clipboard-list" class="h-6 w-6 text-rose-600"></i>
                     </div>
                     <div>
-                        <p class="text-2xl font-bold text-gray-900">Manage</p>
-                        <p class="text-sm text-gray-500">Enrollments</p>
+                        <p class="text-2xl font-bold text-gray-900">{{ pending_requests_count }}</p>
+                        <p class="text-sm text-gray-500">Pending Requests</p>
                     </div>
                 </div>
             </div>

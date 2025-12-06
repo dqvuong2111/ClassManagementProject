@@ -11,6 +11,7 @@ urlpatterns = [
     path('student/', views.student_dashboard_view, name='student_dashboard'),
     path('student/courses/', views.student_courses_view, name='student_courses'),
     path('student/schedule/', views.student_schedule_view, name='student_schedule'),
+    path('student/pending/', views.student_pending_requests_view, name='student_pending'),
     path('student/achievements/', views.student_achievements_view, name='student_achievements'),
     
     # Class Management
@@ -34,6 +35,9 @@ urlpatterns = [
 
     # Enrollment Management
     path('enrollments/', views.manage_enrollments_view, name='manage_enrollments'),
+    path('enrollments/requests/', views.manage_requests_view, name='manage_requests'),
+    path('enrollments/approve/<int:pk>/', views.approve_request_view, name='approve_request'),
+    path('enrollments/reject/<int:pk>/', views.reject_request_view, name='reject_request'),
     path('enrollments/add/', views.add_enrollment_view, name='add_enrollment'),
     path('enrollments/delete/<int:pk>/', views.delete_enrollment_view, name='delete_enrollment'),
 

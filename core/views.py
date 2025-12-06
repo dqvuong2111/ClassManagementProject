@@ -52,14 +52,20 @@ def enroll_student(request, class_id):
         messages.error(request, "Only students can enroll in classes.")
         return redirect('class_detail', pk=class_id)
 
-    # Check if already enrolled
-    if Enrollment.objects.filter(student=student, clazz=clazz).exists():
-        messages.warning(request, "You are already enrolled in this class.")
+    # Check if already enrolled (or requested)
+    enrollment = Enrollment.objects.filter(student=student, clazz=clazz).first()
+    if enrollment:
+        if enrollment.status == 'approved':
+            messages.warning(request, "You are already enrolled in this class.")
+        elif enrollment.status == 'pending':
+            messages.info(request, "You have already requested to enroll in this class. Please wait for approval.")
+        elif enrollment.status == 'rejected':
+            messages.error(request, "Your previous enrollment request for this class was rejected.")
         return redirect('class_detail', pk=class_id)
 
-    # Create enrollment
-    Enrollment.objects.create(student=student, clazz=clazz)
-    messages.success(request, f"Successfully enrolled in {clazz.class_name}!")
+    # Create enrollment request
+    Enrollment.objects.create(student=student, clazz=clazz, status='pending')
+    messages.success(request, f"Enrollment request for {clazz.class_name} sent successfully! Please wait for admin approval.")
     return redirect('dashboard:student_dashboard')
 
 def features(request):

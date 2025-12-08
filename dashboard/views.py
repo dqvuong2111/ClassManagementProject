@@ -50,13 +50,45 @@ def teacher_dashboard_view(request):
         return redirect('home')
     
     teacher = request.user.teacher
-    classes = Clazz.objects.filter(teacher=teacher).annotate(
+    classes_qs = Clazz.objects.filter(teacher=teacher).annotate(
         student_count=Count('enrollments', filter=Q(enrollments__status='approved'))
     )
     
+    # Calculate total unique students taught by this teacher
+    total_students = Student.objects.filter(
+        enrollments__clazz__teacher=teacher,
+        enrollments__status='approved'
+    ).distinct().count()
+    
+    today = datetime.date.today()
+    
+    classes = []
+    for clazz in classes_qs:
+        # Calculate progress
+        if clazz.start_date and clazz.end_date:
+            total_days = (clazz.end_date - clazz.start_date).days
+            if total_days > 0:
+                days_elapsed = (today - clazz.start_date).days
+                progress = (days_elapsed / total_days) * 100
+                progress = max(0, min(100, progress)) # Clamp between 0 and 100
+            else:
+                progress = 100 if today >= clazz.end_date else 0
+        else:
+            progress = 0
+            
+        # Attach to object (won't save to DB, just for view)
+        clazz.progress = int(progress)
+        
+        # Check if active (current)
+        clazz.is_active = clazz.start_date <= today <= clazz.end_date if clazz.start_date and clazz.end_date else False
+        
+        classes.append(clazz)
+    
     return render(request, 'dashboard/teacher_dashboard.html', {
         'teacher': teacher,
-        'classes': classes
+        'classes': classes,
+        'total_students': total_students,
+        'today': today,
     })
 
 @login_required
@@ -356,12 +388,21 @@ def manage_requests_view(request):
 
 @login_required
 @user_passes_test(is_staff_user, login_url="accounts:login")
+def verify_payment_view(request, pk):
+    enrollment = get_object_or_404(Enrollment, pk=pk)
+    enrollment.is_paid = True
+    enrollment.save()
+    messages.success(request, f"Payment verified for {enrollment.student.full_name}.")
+    return redirect('dashboard:manage_enrollments')
+
+@login_required
+@user_passes_test(is_staff_user, login_url="accounts:login")
 def approve_request_view(request, pk):
     enrollment = get_object_or_404(Enrollment, pk=pk)
     enrollment.status = 'approved'
-    enrollment.is_paid = True # Auto-mark as paid upon approval
     enrollment.save()
-    messages.success(request, f"Enrollment for {enrollment.student.full_name} approved and payment verified.")
+    
+    messages.success(request, f"Enrollment for {enrollment.student.full_name} approved.")
     return redirect('dashboard:manage_enrollments')
 
 @login_required
@@ -562,12 +603,14 @@ def take_attendance_view(request, class_pk):
         })
         
     base_template = 'dashboard/teacher_base_dashboard.html' if hasattr(request.user, 'teacher') else 'dashboard/base_dashboard.html'
+    dashboard_url = 'dashboard:teacher_dashboard' if hasattr(request.user, 'teacher') else 'dashboard:dashboard'
         
     return render(request, 'dashboard/take_attendance.html', {
         'clazz': clazz,
         'date': date,
         'attendance_data': attendance_data,
-        'base_template': base_template
+        'base_template': base_template,
+        'dashboard_url': dashboard_url
     })
 
 @login_required
@@ -595,9 +638,11 @@ def enter_grades_view(request, class_pk):
         return redirect('dashboard:enter_grades', class_pk=class_pk)
 
     base_template = 'dashboard/teacher_base_dashboard.html' if hasattr(request.user, 'teacher') else 'dashboard/base_dashboard.html'
+    dashboard_url = 'dashboard:teacher_dashboard' if hasattr(request.user, 'teacher') else 'dashboard:dashboard'
 
     return render(request, 'dashboard/enter_grades.html', {
         'clazz': clazz,
         'enrollments': enrollments,
-        'base_template': base_template
+        'base_template': base_template,
+        'dashboard_url': dashboard_url
     })

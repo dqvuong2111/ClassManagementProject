@@ -81,9 +81,15 @@
                             </td>
                             <td class="px-6 py-4 text-right">
                                 <div class="flex items-center justify-end gap-2">
-                                    <a href="{% url 'dashboard:approve_request' req.pk %}" class="px-3 py-1.5 bg-green-600 text-white hover:bg-green-700 rounded-lg text-xs font-medium transition-colors shadow-sm">
-                                        Approve
+                                    {% if not req.is_paid %}
+                                    <a href="{% url 'dashboard:verify_payment' req.pk %}" class="px-3 py-1.5 bg-indigo-600 text-white hover:bg-indigo-700 rounded-lg text-xs font-medium transition-colors shadow-sm">
+                                        Verify Payment
                                     </a>
+                                    {% else %}
+                                    <a href="{% url 'dashboard:approve_request' req.pk %}" class="px-3 py-1.5 bg-green-600 text-white hover:bg-green-700 rounded-lg text-xs font-medium transition-colors shadow-sm">
+                                        Approved
+                                    </a>
+                                    {% endif %}
                                     <a href="{% url 'dashboard:reject_request' req.pk %}" class="px-3 py-1.5 bg-white border border-gray-300 text-gray-700 hover:bg-gray-50 rounded-lg text-xs font-medium transition-colors">
                                         Reject
                                     </a>

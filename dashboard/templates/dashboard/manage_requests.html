@@ -40,8 +40,11 @@
                         <td class="px-6 py-4 text-gray-600">{{ req.enrollment_date }}</td>
                         <td class="px-6 py-4 text-right">
                             <div class="flex items-center justify-end gap-2">
-                                <a href="{% url 'dashboard:approve_request' req.pk %}" class="px-3 py-1.5 bg-green-100 text-green-700 hover:bg-green-200 rounded-lg text-xs font-medium transition-colors">
-                                    Approve
+                                <a href="{% url 'dashboard:approve_request' req.pk %}?paid=true" class="px-3 py-1.5 bg-green-100 text-green-700 hover:bg-green-200 rounded-lg text-xs font-medium transition-colors" title="Approve and Mark as Paid">
+                                    Paid
+                                </a>
+                                <a href="{% url 'dashboard:approve_request' req.pk %}?paid=false" class="px-3 py-1.5 bg-yellow-100 text-yellow-700 hover:bg-yellow-200 rounded-lg text-xs font-medium transition-colors" title="Approve as Unpaid">
+                                    Unpaid
                                 </a>
                                 <a href="{% url 'dashboard:reject_request' req.pk %}" class="px-3 py-1.5 bg-red-100 text-red-700 hover:bg-red-200 rounded-lg text-xs font-medium transition-colors">
                                     Reject

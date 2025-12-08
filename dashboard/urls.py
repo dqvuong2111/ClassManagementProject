@@ -43,6 +43,7 @@ urlpatterns = [
     path('enrollments/', views.manage_enrollments_view, name='manage_enrollments'),
     path('enrollments/requests/', views.manage_requests_view, name='manage_requests'),
     path('enrollments/approve/<int:pk>/', views.approve_request_view, name='approve_request'),
+    path('enrollments/verify-payment/<int:pk>/', views.verify_payment_view, name='verify_payment'),
     path('enrollments/reject/<int:pk>/', views.reject_request_view, name='reject_request'),
     path('enrollments/add/', views.add_enrollment_view, name='add_enrollment'),
     path('enrollments/delete/<int:pk>/', views.delete_enrollment_view, name='delete_enrollment'),

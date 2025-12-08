@@ -1,111 +1,215 @@
-{% extends 'dashboard/base_dashboard.html' %} {# Use base_dashboard for both student/teacher #}
+{% extends 'dashboard/base_dashboard.html' %}
 {% load static %}
 
 {% block title %}Messages{% endblock %}
 
 {% block content %}
-<div class="container mx-auto p-6 space-y-6">
-    <h1 class="text-3xl font-bold text-gray-900">Messages</h1>
+<div class="h-full flex flex-col" style="background-color: var(--bg-app); color: var(--text-primary);">
+    <!-- Header -->
+    <div class="p-6">
+        <h1 class="text-3xl font-bold" style="color: var(--text-primary);">Messages</h1>
+    </div>
 
-    <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-        <!-- New Message Form -->
-        <div class="md:col-span-1 bg-white rounded-xl shadow-sm border border-gray-200 p-6 h-fit">
-            <h2 class="text-xl font-bold text-gray-900 mb-4">Compose Message</h2>
-            <form method="post" class="space-y-4">
-                {% csrf_token %}
-                <div>
-                    <label for="{{ form.recipient_username.id_for_label }}" class="block text-sm font-medium text-gray-700">Recipient (Username)</label>
-                    {{ form.recipient_username }}
-                </div>
-                <div>
-                    <label for="{{ form.subject.id_for_label }}" class="block text-sm font-medium text-gray-700">Subject</label>
-                    {{ form.subject }}
-                </div>
-                <div>
-                    <label for="{{ form.body.id_for_label }}" class="block text-sm font-medium text-gray-700">Body</label>
-                    {{ form.body }}
-                </div>
-                <button type="submit" class="w-full bg-indigo-600 text-white px-4 py-2 rounded-lg hover:bg-indigo-700 transition-colors">
-                    Send Message
+    <!-- Main Content -->
+    <div class="flex-1 px-6 pb-6">
+        <div class="bg-white rounded-2xl shadow-sm border h-full flex flex-col" style="background-color: var(--bg-surface); border-color: var(--border-default);">
+            <!-- Tabs -->
+            <div class="flex border-b" style="border-color: var(--border-default);">
+                <button id="inbox-tab" onclick="switchTab('inbox')" class="tab-button active">
+                    <i data-lucide="inbox" class="h-5 w-5 mr-2"></i>
+                    Inbox ({{ received.count }})
                 </button>
-            </form>
-        </div>
-
-        <!-- Message List -->
-        <div class="md:col-span-2 space-y-6">
-            <!-- Received Messages -->
-            <div class="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden">
-                <div class="p-4 border-b border-gray-200 bg-gray-50 flex items-center justify-between">
-                    <h2 class="font-semibold text-gray-900 flex items-center gap-2">
-                        <i data-lucide="inbox" class="h-5 w-5 text-blue-500"></i>
-                        Received ({{ received.count }})
-                    </h2>
-                </div>
-                <div class="divide-y divide-gray-100">
-                    {% for message in received %}
-                    <div class="p-4 hover:bg-gray-50 transition-colors cursor-pointer" onclick="toggleMessageBody('received-{{ message.pk }}')">
-                        <div class="flex justify-between items-center mb-1">
-                            <h3 class="font-medium text-gray-900 {% if not message.is_read %}font-bold{% endif %}">{{ message.subject }}</h3>
-                            <span class="text-xs text-gray-500">{{ message.created_at|date:"M d, H:i" }}</span>
-                        </div>
-                        <p class="text-sm text-gray-600 mb-2">From: {{ message.sender.username }}</p>
-                        <div id="received-{{ message.pk }}" class="message-body hidden text-gray-700 text-sm whitespace-pre-wrap">
-                            {{ message.body }}
-                        </div>
-                    </div>
-                    {% empty %}
-                    <div class="p-8 text-center text-gray-500 text-sm">
-                        No messages received.
-                    </div>
-                    {% endfor %}
-                </div>
+                <button id="sent-tab" onclick="switchTab('sent')" class="tab-button">
+                    <i data-lucide="send" class="h-5 w-5 mr-2"></i>
+                    Sent ({{ sent.count }})
+                </button>
+                <button id="compose-tab" onclick="switchTab('compose')" class="tab-button">
+                    <i data-lucide="edit-3" class="h-5 w-5 mr-2"></i>
+                    Compose
+                </button>
             </div>
 
-            <!-- Sent Messages -->
-            <div class="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden">
-                <div class="p-4 border-b border-gray-200 bg-gray-50 flex items-center justify-between">
-                    <h2 class="font-semibold text-gray-900 flex items-center gap-2">
-                        <i data-lucide="send" class="h-5 w-5 text-green-500"></i>
-                        Sent ({{ sent.count }})
-                    </h2>
-                </div>
-                <div class="divide-y divide-gray-100">
-                    {% for message in sent %}
-                    <div class="p-4 hover:bg-gray-50 transition-colors cursor-pointer" onclick="toggleMessageBody('sent-{{ message.pk }}')">
-                        <div class="flex justify-between items-center mb-1">
-                            <h3 class="font-medium text-gray-900">{{ message.subject }}</h3>
-                            <span class="text-xs text-gray-500">{{ message.created_at|date:"M d, H:i" }}</span>
+            <!-- Tab Content -->
+            <div class="flex-1 p-6 overflow-y-auto">
+                <!-- Inbox Content -->
+                <div id="inbox-content" class="tab-content space-y-2">
+                    {% for message in received %}
+                    <div class="message-item {% if not message.is_read %}unread{% endif %}" onclick="this.classList.remove('unread'); document.getElementById('message-body-received-{{ message.pk }}').classList.toggle('hidden');">
+                        <div class="flex items-center justify-between">
+                            <div class="flex items-center">
+                                <div class="w-2 h-2 rounded-full mr-3 indicator"></div>
+                                <span class="font-semibold mr-4 w-40 truncate">{{ message.sender.username }}</span>
+                                <span class="truncate">{{ message.subject }}</span>
+                            </div>
+                            <span class="text-xs text-gray-500 ml-4">{{ message.created_at|date:"M d, H:i" }}</span>
                         </div>
-                        <p class="text-sm text-gray-600 mb-2">To: {{ message.recipient.username }}</p>
-                        <div id="sent-{{ message.pk }}" class="message-body hidden text-gray-700 text-sm whitespace-pre-wrap">
-                            {{ message.body }}
+                        <div id="message-body-received-{{ message.pk }}" class="hidden mt-4 p-4 rounded-lg" style="background-color: var(--bg-soft);">
+                            <p class="whitespace-pre-wrap">{{ message.body }}</p>
                         </div>
                     </div>
                     {% empty %}
-                    <div class="p-8 text-center text-gray-500 text-sm">
-                        No messages sent.
-                    </div>
+                    <p class="text-center py-12" style="color: var(--text-secondary);">Your inbox is empty.</p>
                     {% endfor %}
+                </div>
+
+                <!-- Sent Content -->
+                <div id="sent-content" class="tab-content hidden space-y-2">
+                    {% for message in sent %}
+                    <div class="message-item" onclick="document.getElementById('message-body-sent-{{ message.pk }}').classList.toggle('hidden');">
+                         <div class="flex items-center justify-between">
+                            <div class="flex items-center">
+                                <div class="w-2 h-2 rounded-full mr-3"></div>
+                                <span class="font-semibold mr-4 w-40 truncate">To: {{ message.recipient.username }}</span>
+                                <span class="truncate">{{ message.subject }}</span>
+                            </div>
+                            <span class="text-xs text-gray-500 ml-4">{{ message.created_at|date:"M d, H:i" }}</span>
+                        </div>
+                        <div id="message-body-sent-{{ message.pk }}" class="hidden mt-4 p-4 rounded-lg" style="background-color: var(--bg-soft);">
+                            <p class="whitespace-pre-wrap">{{ message.body }}</p>
+                        </div>
+                    </div>
+                    {% empty %}
+                    <p class="text-center py-12" style="color: var(--text-secondary);">You haven't sent any messages.</p>
+                    {% endfor %}
+                </div>
+
+                <!-- Compose Content -->
+                <div id="compose-content" class="tab-content hidden">
+                    <form method="post" class="space-y-6">
+                        {% csrf_token %}
+                        <div>
+                            <label for="{{ form.recipient_username.id_for_label }}" class="form-label">Recipient Username</label>
+                            {{ form.recipient_username }}
+                        </div>
+                        <div>
+                            <label for="{{ form.subject.id_for_label }}" class="form-label">Subject</label>
+                            {{ form.subject }}
+                        </div>
+                        <div>
+                            <label for="{{ form.body.id_for_label }}" class="form-label">Body</label>
+                            {{ form.body }}
+                        </div>
+                        <div class="flex justify-end">
+                            <button type="submit" class="send-button">
+                                <i data-lucide="send" class="h-4 w-4 mr-2"></i>
+                                Send Message
+                            </button>
+                        </div>
+                    </form>
                 </div>
             </div>
         </div>
     </div>
 </div>
 
-<script>
-    function toggleMessageBody(id) {
-        var body = document.getElementById(id);
-        if (body.classList.contains('hidden')) {
-            body.classList.remove('hidden');
-            // Mark as read - this would typically be an AJAX call
-            // For now, just visually update (remove font-bold)
-            var subjectElement = body.previousElementSibling.previousElementSibling.querySelector('h3');
-            if (subjectElement && subjectElement.classList.contains('font-bold')) {
-                subjectElement.classList.remove('font-bold');
-            }
-        } else {
-            body.classList.add('hidden');
-        }
+<style>
+    .tab-button {
+        padding: 1rem 1.5rem;
+        font-medium: 600;
+        font-size: 0.9rem;
+        display: flex;
+        align-items: center;
+        border-bottom: 2px solid transparent;
+        color: var(--text-secondary);
+        transition: all 0.2s ease;
     }
+    .tab-button:hover {
+        background-color: var(--bg-soft);
+        color: var(--text-primary);
+    }
+    .tab-button.active {
+        color: var(--accent);
+        border-bottom-color: var(--accent);
+    }
+    .message-item {
+        padding: 1rem;
+        border-radius: 0.75rem;
+        cursor: pointer;
+        border: 1px solid transparent;
+        transition: background-color 0.2s;
+    }
+    .message-item:hover {
+        background-color: var(--bg-soft);
+        border-color: var(--border-default);
+    }
+    .message-item.unread .font-semibold {
+        font-weight: 800;
+        color: var(--text-primary);
+    }
+    .message-item .indicator {
+        background-color: transparent;
+    }
+    .message-item.unread .indicator {
+        background-color: var(--accent);
+    }
+
+    /* Form Styles */
+    .form-label {
+        display: block;
+        font-size: 0.875rem;
+        font-weight: 500;
+        color: var(--text-secondary);
+        margin-bottom: 0.5rem;
+    }
+    input[type="text"],
+    textarea {
+        display: block;
+        width: 100%;
+        padding: 0.75rem 1rem;
+        font-size: 0.9rem;
+        border-radius: 0.75rem;
+        border: 1px solid var(--border-default);
+        background-color: var(--bg-surface);
+        color: var(--text-primary);
+        transition: border-color 0.2s, box-shadow 0.2s;
+    }
+    input[type="text"]:focus,
+    textarea:focus {
+        outline: none;
+        border-color: var(--accent);
+        box-shadow: 0 0 0 3px var(--accent-soft);
+    }
+    textarea {
+        min-height: 150px;
+    }
+    .send-button {
+        display: inline-flex;
+        align-items: center;
+        padding: 0.75rem 1.5rem;
+        border-radius: 0.75rem;
+        font-weight: 600;
+        color: var(--btn-primary-text);
+        background-color: var(--btn-primary-bg);
+        transition: opacity 0.2s;
+    }
+    .send-button:hover {
+        opacity: 0.85;
+    }
+
+</style>
+
+<script>
+    function switchTab(tabName) {
+        // Hide all content
+        document.getElementById('inbox-content').classList.add('hidden');
+        document.getElementById('sent-content').classList.add('hidden');
+        document.getElementById('compose-content').classList.add('hidden');
+
+        // Deactivate all tabs
+        document.getElementById('inbox-tab').classList.remove('active');
+        document.getElementById('sent-tab').classList.remove('active');
+        document.getElementById('compose-tab').classList.remove('active');
+
+        // Activate the selected tab and show its content
+        document.getElementById(tabName + '-content').classList.remove('hidden');
+        document.getElementById(tabName + '-tab').classList.add('active');
+    }
+
+    // Set initial active tab based on URL hash or default to inbox
+    document.addEventListener('DOMContentLoaded', () => {
+        const initialTab = window.location.hash.substring(1) || 'inbox';
+        switchTab(initialTab);
+    });
+
 </script>
 {% endblock %}

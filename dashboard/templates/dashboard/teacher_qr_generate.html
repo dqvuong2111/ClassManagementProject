@@ -4,56 +4,143 @@
 {% block title %}QR Attendance Generator{% endblock %}
 
 {% block content %}
-<div class="container mx-auto p-6 max-w-2xl space-y-6">
-    <div class="flex items-center justify-between mb-6">
-        <div>
-            <h1 class="text-3xl font-bold text-gray-900">QR Attendance Generator</h1>
-            <p class="text-gray-500">Generate a QR code for students to mark attendance.</p>
-        </div>
+<div class="h-full flex flex-col" style="background-color: var(--bg-app); color: var(--text-primary);">
+    <!-- Header -->
+    <div class="p-6">
+        <h1 class="text-3xl font-bold" style="color: var(--text-primary);">QR Attendance</h1>
+        <p style="color: var(--text-secondary);">Generate a unique QR code for today's session.</p>
     </div>
 
-    <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-6 space-y-4">
-        <form method="post" class="space-y-4">
-            {% csrf_token %}
-            <div>
-                <label for="class_id" class="block text-sm font-medium text-gray-700">Select Class</label>
-                <select name="class_id" id="class_id" class="form-control" required>
-                    <option value="">-- Choose a class --</option>
-                    {% for class in classes %}
-                        <option value="{{ class.pk }}" {% if selected_class.pk == class.pk %}selected{% endif %}>{{ class.class_name }}</option>
-                    {% endfor %}
-                </select>
+    <!-- Main Content -->
+    <div class="flex-1 px-6 pb-6">
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 h-full">
+            <!-- Left: Form -->
+            <div class="bg-white rounded-2xl shadow-sm border p-6 lg:p-8 flex flex-col" style="background-color: var(--bg-surface); border-color: var(--border-default);">
+                <h2 class="text-2xl font-bold mb-6" style="color: var(--text-primary);">Select a Class</h2>
+                <form method="post" class="space-y-6">
+                    {% csrf_token %}
+                    <div>
+                        <label for="class_id" class="form-label">Active Classes for Today</label>
+                        <select name="class_id" id="class_id" required>
+                            <option value="" disabled {% if not selected_class %}selected{% endif %}>-- Choose a class to start a session --</option>
+                            {% for class in classes %}
+                                <option value="{{ class.pk }}" {% if selected_class.pk == class.pk %}selected{% endif %}>
+                                    {{ class.class_name }}
+                                </option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                    <div class="flex-1"></div>
+                    <div class="flex justify-end pt-4">
+                        <button type="submit" class="send-button w-full lg:w-auto">
+                            <i data-lucide="qr-code" class="h-4 w-4 mr-2"></i>
+                            {% if qr_data %}Regenerate QR Code{% else %}Generate QR Code{% endif %}
+                        </button>
+                    </div>
+                </form>
             </div>
-            <button type="submit" class="w-full bg-indigo-600 text-white px-4 py-2 rounded-lg hover:bg-indigo-700 transition-colors">
-                Generate QR Code
-            </button>
-        </form>
 
-        {% if qr_data %}
-            <div class="mt-8 pt-4 border-t border-gray-200">
-                <h2 class="text-xl font-bold text-gray-900 mb-4">Scan for Attendance: {{ selected_class.class_name }}</h2>
-                <div class="flex flex-col items-center">
-                    <!-- QR Code will be generated here by a JS library or server-side -->
-                    <img id="qrcode-img" class="border border-gray-300 p-2 rounded-lg mb-4" alt="QR Code" width="250" height="250">
-                    <p class="text-sm text-gray-600 break-all text-center">{{ qr_data }}</p>
-                    <p class="text-xs text-red-500 mt-2">QR code is valid for a limited time.</p>
-                </div>
+            <!-- Right: QR Code Display -->
+            <div class="bg-white rounded-2xl shadow-sm border p-6 lg:p-8 flex flex-col items-center justify-center" style="background-color: var(--bg-surface); border-color: var(--border-default);">
+                {% if qr_data %}
+                    <h2 class="text-2xl font-bold mb-2 text-center" style="color: var(--text-primary);">Attendance for: <span style="color: var(--accent);">{{ selected_class.class_name }}</span></h2>
+                    <p class="mb-6 text-center" style="color: var(--text-secondary);">Students can now scan this code to be marked as present.</p>
+                    <div id="qrcode-container" class="p-4 bg-white rounded-2xl border-2" style="border-color: var(--border-default);">
+                        <img id="qrcode-img" alt="QR Code">
+                    </div>
+                    <p class="text-xs mt-4 p-2 rounded-lg break-all text-center" style="color: var(--text-tertiary); background-color: var(--bg-soft);">{{ qr_data }}</p>
+                    <p class="text-sm font-semibold mt-4 text-center" style="color: var(--color-error);">This code is valid for a limited time and for today's date only.</p>
+                {% else %}
+                    <div class="text-center">
+                        <div class="flex items-center justify-center h-24 w-24 rounded-full mx-auto mb-4" style="background-color: var(--bg-soft);">
+                            <i data-lucide="qr-code" class="h-12 w-12" style="color: var(--text-secondary);"></i>
+                        </div>
+                        <h2 class="text-xl font-bold" style="color: var(--text-primary);">QR Code will appear here</h2>
+                        <p class="mt-1" style="color: var(--text-secondary);">Select a class and click "Generate" to create the attendance code.</p>
+                    </div>
+                {% endif %}
             </div>
-        {% endif %}
+        </div>
     </div>
 </div>
 
+<style>
+    /* Using styles already defined in create_assignment and messages */
+    .form-label {
+        display: block;
+        font-size: 0.875rem;
+        font-weight: 500;
+        color: var(--text-secondary);
+        margin-bottom: 0.5rem;
+    }
+    select {
+        display: block;
+        width: 100%;
+        padding: 0.75rem 1rem;
+        font-size: 0.9rem;
+        border-radius: 0.75rem;
+        border: 1px solid var(--border-default);
+        background-color: var(--bg-surface);
+        color: var(--text-primary);
+        transition: border-color 0.2s, box-shadow 0.2s;
+        -webkit-appearance: none;
+        appearance: none;
+        background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E");
+        background-repeat: no-repeat;
+        background-position: right 1rem center;
+        background-size: 1em;
+    }
+    select:focus {
+        outline: none;
+        border-color: var(--accent);
+        box-shadow: 0 0 0 3px var(--accent-soft);
+    }
+    .send-button {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        padding: 0.75rem 1.5rem;
+        border-radius: 0.75rem;
+        font-weight: 600;
+        color: var(--btn-primary-text);
+        background-color: var(--btn-primary-bg);
+        transition: opacity 0.2s;
+    }
+    .send-button:hover {
+        opacity: 0.85;
+    }
+</style>
+
 {% if qr_data %}
-<script src="https://cdn.jsdelivr.net/npm/qrcode.js/qrcode.min.js"></script>
+{# Make sure this qrcode.min.js is available or use another library #}
+<script src="https://cdn.jsdelivr.net/npm/easyqrcodejs@4.4.13/dist/easy.qrcode.min.js"></script>
 <script>
-    var qrcode = new QRCode(document.getElementById("qrcode-img"), {
+document.addEventListener('DOMContentLoaded', function() {
+    var container = document.getElementById('qrcode-container');
+    var img = document.getElementById('qrcode-img');
+    
+    // Hide the placeholder img tag
+    img.style.display = 'none';
+
+    // Options for the QR code
+    var options = {
         text: "{{ qr_data }}",
-        width: 250,
-        height: 250,
-        colorDark : "#000000",
-        colorLight : "#ffffff",
-        correctLevel : QRCode.CorrectLevel.H
-    });
+        width: 256,
+        height: 256,
+        colorDark: "#000000",
+        colorLight: "#ffffff",
+        correctLevel: QRCode.CorrectLevel.H,
+        quietZone: 15,
+        logo: "{% static 'images/default_class.png' %}", // Optional: Add a logo
+        logoWidth: 60,
+        logoHeight: 60,
+        logoBackgroundColor: '#ffffff',
+        logoBackgroundTransparent: false
+    };
+
+    // Create QR Code
+    new QRCode(container, options);
+});
 </script>
 {% endif %}
 {% endblock %}

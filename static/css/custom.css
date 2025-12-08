@@ -220,3 +220,28 @@ a:hover {
 .footer-custom a:hover {
     color: var(--primary-color);
 }
+
+/* giaovienai styles */
+:root {
+    --bg-app: #EAEAEA;
+    --bg-surface: #FFFFFF;
+    --bg-soft: #E0E0E0;
+    --bg-elevated: #FFFFFF;
+    --text-primary: #111111;
+    --text-secondary: #555555;
+    --text-tertiary: #888888;
+    --border-default: rgba(0, 0, 0, 0.12);
+    --border-hover: rgba(0, 0, 0, 0.20);
+    --border-strong: rgba(0, 0, 0, 0.25);
+    --btn-primary-bg: #111111;
+    --btn-primary-text: #FFFFFF;
+    --accent: #0066CC;
+    --accent-soft: rgba(0, 102, 204, 0.12);
+    --color-success: #34C759;
+    --color-warning: #FF9500;
+    --color-error: #FF3B30;
+}
+
+[data-lucide] {
+    stroke-width: 1.75;
+}

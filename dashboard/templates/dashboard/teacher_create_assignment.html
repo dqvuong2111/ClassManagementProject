@@ -4,40 +4,96 @@
 {% block title %}Create New Assignment{% endblock %}
 
 {% block content %}
-<div class="container mx-auto p-6 max-w-2xl space-y-6">
-    <div class="flex items-center justify-between mb-6">
+<div class="h-full flex flex-col" style="background-color: var(--bg-app); color: var(--text-primary);">
+    <!-- Header -->
+    <div class="p-6 flex items-center justify-between">
         <div>
-            <h1 class="text-3xl font-bold text-gray-900">Create New Assignment</h1>
-            <p class="text-gray-500">Define details and assign to a class</p>
+            <h1 class="text-3xl font-bold" style="color: var(--text-primary);">Create New Assignment</h1>
+            <p style="color: var(--text-secondary);">Define details and assign to a class</p>
         </div>
-        <a href="{% url 'dashboard:teacher_assignments' %}" class="flex items-center gap-2 px-4 py-2 bg-gray-200 text-gray-700 rounded-xl hover:bg-gray-300 transition-colors text-sm font-medium">
+        <a href="{% url 'dashboard:teacher_assignments' %}" class="flex items-center gap-2 px-4 py-2 rounded-xl hover:bg-gray-300 transition-colors text-sm font-medium" style="background-color: var(--bg-soft); color: var(--text-primary);">
             <i data-lucide="arrow-left" class="h-4 w-4"></i> Back to Assignments
         </a>
     </div>
 
-    <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
-        <form method="post" class="space-y-4">
-            {% csrf_token %}
-            <div>
-                <label for="{{ form.title.id_for_label }}" class="block text-sm font-medium text-gray-700">Title</label>
-                {{ form.title }}
-            </div>
-            <div>
-                <label for="{{ form.description.id_for_label }}" class="block text-sm font-medium text-gray-700">Description</label>
-                {{ form.description }}
-            </div>
-            <div>
-                <label for="{{ form.due_date.id_for_label }}" class="block text-sm font-medium text-gray-700">Due Date</label>
-                {{ form.due_date }}
-            </div>
-            <div>
-                <label for="{{ form.clazz.id_for_label }}" class="block text-sm font-medium text-gray-700">Assign to Class</label>
-                {{ form.clazz }}
-            </div>
-            <button type="submit" class="w-full bg-indigo-600 text-white px-4 py-2 rounded-lg hover:bg-indigo-700 transition-colors">
-                Create Assignment
-            </button>
-        </form>
+    <!-- Main Content -->
+    <div class="flex-1 px-6 pb-6">
+        <div class="bg-white rounded-2xl shadow-sm border p-6 lg:p-8" style="background-color: var(--bg-surface); border-color: var(--border-default);">
+            <form method="post" class="space-y-6">
+                {% csrf_token %}
+                <div>
+                    <label for="{{ form.title.id_for_label }}" class="form-label">Title</label>
+                    {{ form.title }}
+                </div>
+                <div>
+                    <label for="{{ form.description.id_for_label }}" class="form-label">Description</label>
+                    {{ form.description }}
+                </div>
+                <div>
+                    <label for="{{ form.due_date.id_for_label }}" class="form-label">Due Date</label>
+                    {{ form.due_date }}
+                </div>
+                <div>
+                    <label for="{{ form.clazz.id_for_label }}" class="form-label">Assign to Class</label>
+                    {{ form.clazz }}
+                </div>
+                <div class="flex justify-end pt-4">
+                    <button type="submit" class="send-button">
+                        <i data-lucide="plus-circle" class="h-4 w-4 mr-2"></i>
+                        Create Assignment
+                    </button>
+                </div>
+            </form>
+        </div>
     </div>
 </div>
+
+<style>
+    /* Form Styles - copied from messages.html for consistency */
+    .form-label {
+        display: block;
+        font-size: 0.875rem;
+        font-weight: 500;
+        color: var(--text-secondary);
+        margin-bottom: 0.5rem;
+    }
+    input[type="text"],
+    input[type="datetime-local"],
+    textarea,
+    select {
+        display: block;
+        width: 100%;
+        padding: 0.75rem 1rem;
+        font-size: 0.9rem;
+        border-radius: 0.75rem;
+        border: 1px solid var(--border-default);
+        background-color: var(--bg-surface);
+        color: var(--text-primary);
+        transition: border-color 0.2s, box-shadow 0.2s;
+    }
+    input[type="text"]:focus,
+    input[type="datetime-local"]:focus,
+    textarea:focus,
+    select:focus {
+        outline: none;
+        border-color: var(--accent);
+        box-shadow: 0 0 0 3px var(--accent-soft);
+    }
+    textarea {
+        min-height: 120px;
+    }
+    .send-button {
+        display: inline-flex;
+        align-items: center;
+        padding: 0.75rem 1.5rem;
+        border-radius: 0.75rem;
+        font-weight: 600;
+        color: var(--btn-primary-text);
+        background-color: var(--btn-primary-bg);
+        transition: opacity 0.2s;
+    }
+    .send-button:hover {
+        opacity: 0.85;
+    }
+</style>
 {% endblock %}

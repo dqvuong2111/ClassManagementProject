@@ -4,36 +4,111 @@
 {% block title %}Give Feedback for {{ clazz.class_name }}{% endblock %}
 
 {% block content %}
-<div class="container mx-auto p-6 max-w-2xl space-y-6">
-    <div class="flex items-center justify-between mb-6">
-        <div>
-            <h1 class="text-3xl font-bold text-gray-900">Give Feedback for "{{ clazz.class_name }}"</h1>
-            <p class="text-gray-500">Your anonymous feedback helps us improve.</p>
-        </div>
-        <a href="{% url 'dashboard:student_class_detail' clazz.pk %}" class="flex items-center gap-2 px-4 py-2 bg-gray-200 text-gray-700 rounded-xl hover:bg-gray-300 transition-colors text-sm font-medium">
-            <i data-lucide="arrow-left" class="h-4 w-4"></i> Back to Class
-        </a>
+<div class="h-full flex flex-col" style="background-color: var(--bg-app); color: var(--text-primary);">
+    <!-- Header -->
+    <div class="p-6">
+        <h1 class="text-3xl font-bold" style="color: var(--text-primary);">Give Feedback</h1>
+        <p style="color: var(--text-secondary);">Your anonymous feedback on "{{ clazz.class_name }}" helps us improve.</p>
     </div>
 
-    <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
-        <form method="post" class="space-y-4">
-            {% csrf_token %}
-            <div>
-                <label for="{{ form.teacher_rate.id_for_label }}" class="block text-sm font-medium text-gray-700">Rate Teacher (1-10)</label>
-                {{ form.teacher_rate }}
-            </div>
-            <div>
-                <label for="{{ form.class_rate.id_for_label }}" class="block text-sm font-medium text-gray-700">Rate Class (1-10)</label>
-                {{ form.class_rate }}
-            </div>
-            <div>
-                <label for="{{ form.comment.id_for_label }}" class="block text-sm font-medium text-gray-700">Comments (Optional)</label>
-                {{ form.comment }}
-            </div>
-            <button type="submit" class="w-full bg-indigo-600 text-white px-4 py-2 rounded-lg hover:bg-indigo-700 transition-colors">
-                Submit Feedback
-            </button>
-        </form>
+    <!-- Main Content -->
+    <div class="flex-1 px-6 pb-6">
+        <div class="bg-white rounded-2xl shadow-sm border p-6 lg:p-8 max-w-3xl mx-auto" style="background-color: var(--bg-surface); border-color: var(--border-default);">
+            <form method="post" class="space-y-8">
+                {% csrf_token %}
+
+                <!-- Ratings Section -->
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                    <div>
+                        <label for="{{ form.teacher_rate.id_for_label }}" class="form-label text-center">How would you rate the teacher?</label>
+                        <div class="flex items-center justify-center gap-2 mt-2">
+                            <i data-lucide="frown" class="h-6 w-6" style="color: var(--text-tertiary);"></i>
+                            {{ form.teacher_rate }}
+                            <i data-lucide="smile" class="h-6 w-6" style="color: var(--text-tertiary);"></i>
+                        </div>
+                         <p class="text-xs text-center mt-2" style="color: var(--text-tertiary);">(1 = Needs Improvement, 10 = Excellent)</p>
+                    </div>
+                    <div>
+                        <label for="{{ form.class_rate.id_for_label }}" class="form-label text-center">How would you rate the class overall?</label>
+                        <div class="flex items-center justify-center gap-2 mt-2">
+                             <i data-lucide="thumbs-down" class="h-6 w-6" style="color: var(--text-tertiary);"></i>
+                            {{ form.class_rate }}
+                            <i data-lucide="thumbs-up" class="h-6 w-6" style="color: var(--text-tertiary);"></i>
+                        </div>
+                        <p class="text-xs text-center mt-2" style="color: var(--text-tertiary);">(1 = Not Helpful, 10 = Very Helpful)</p>
+                    </div>
+                </div>
+
+                <!-- Comments Section -->
+                <div>
+                    <label for="{{ form.comment.id_for_label }}" class="form-label">Additional Comments (Optional)</label>
+                    {{ form.comment }}
+                    <p class="text-xs mt-2" style="color: var(--text-tertiary);">What did you like? What could be improved?</p>
+                </div>
+
+                <!-- Submission -->
+                <div class="flex justify-between items-center pt-4">
+                     <a href="{% url 'dashboard:student_class_detail' clazz.pk %}" class="px-4 py-2 rounded-xl transition-colors text-sm font-medium" style="color: var(--text-secondary); hover: var(--bg-soft);">
+                        Cancel
+                    </a>
+                    <button type="submit" class="send-button">
+                        <i data-lucide="send" class="h-4 w-4 mr-2"></i>
+                        Submit Feedback
+                    </button>
+                </div>
+            </form>
+        </div>
     </div>
 </div>
+
+<style>
+    /* Form Styles */
+    .form-label {
+        display: block;
+        font-size: 1rem;
+        font-weight: 600;
+        color: var(--text-primary);
+        margin-bottom: 0.5rem;
+    }
+    input[type="number"],
+    textarea {
+        display: block;
+        width: 100%;
+        padding: 0.75rem 1rem;
+        font-size: 0.9rem;
+        border-radius: 0.75rem;
+        border: 1px solid var(--border-default);
+        background-color: var(--bg-surface);
+        color: var(--text-primary);
+        transition: border-color 0.2s, box-shadow 0.2s;
+    }
+    input[type="number"] {
+        text-align: center;
+        font-size: 1.5rem;
+        font-weight: bold;
+        max-width: 100px;
+    }
+    input[type="number"]:focus,
+    textarea:focus {
+        outline: none;
+        border-color: var(--accent);
+        box-shadow: 0 0 0 3px var(--accent-soft);
+    }
+    textarea {
+        min-height: 120px;
+    }
+    .send-button {
+        display: inline-flex;
+        align-items: center;
+        padding: 0.75rem 1.5rem;
+        border-radius: 0.75rem;
+        font-weight: 600;
+        color: var(--btn-primary-text);
+        background-color: var(--btn-primary-bg);
+        transition: opacity 0.2s;
+    }
+    .send-button:hover {
+        opacity: 0.85;
+    }
+</style>
 {% endblock %}

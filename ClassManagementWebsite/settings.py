@@ -82,7 +82,8 @@ DATABASES = {
         'NAME': 'ClassManagementWebsite',  # <-- THAY TÊN DATABASE CỦA BẠN VÀO ĐÂY
         'USER': 'dqvuong2111',           # <-- THAY TÊN USER SQL SERVER
         'PASSWORD': '21112005',       # <-- THAY MẬT KHẨU
-        'HOST': 'localhost',         # <-- Tên server hoặc địa chỉ IP, 'localhost' nếu chạy trên cùng máy
+        # <-- Tên server hoặc địa chỉ IP, 'localhost' nếu chạy trên cùng máy
+        'HOST': 'localhost',
         'PORT': '1433',              # <-- Cổng mặc định của SQL Server
         'OPTIONS': {
             'driver': 'ODBC Driver 17 for SQL Server',

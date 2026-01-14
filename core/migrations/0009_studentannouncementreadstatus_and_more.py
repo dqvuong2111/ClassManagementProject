@@ -14,11 +14,14 @@ class Migration(migrations.Migration):
         migrations.CreateModel(
             name='StudentAnnouncementReadStatus',
             fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
+                ('id', models.BigAutoField(auto_created=True,
+                 primary_key=True, serialize=False, verbose_name='ID')),
                 ('is_read', models.BooleanField(default=False)),
                 ('read_at', models.DateTimeField(blank=True, null=True)),
-                ('announcement', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='student_read_statuses', to='core.announcement')),
-                ('student', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='announcement_read_statuses', to='core.student')),
+                ('announcement', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE,
+                 related_name='student_read_statuses', to='core.announcement')),
+                ('student', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE,
+                 related_name='announcement_read_statuses', to='core.student')),
             ],
             options={
                 'verbose_name': 'Student Announcement Read Status',
@@ -29,11 +32,14 @@ class Migration(migrations.Migration):
         migrations.CreateModel(
             name='StudentAssignmentReadStatus',
             fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
+                ('id', models.BigAutoField(auto_created=True,
+                 primary_key=True, serialize=False, verbose_name='ID')),
                 ('is_read', models.BooleanField(default=False)),
                 ('read_at', models.DateTimeField(blank=True, null=True)),
-                ('assignment', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='student_read_statuses', to='core.assignment')),
-                ('student', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='assignment_read_statuses', to='core.student')),
+                ('assignment', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE,
+                 related_name='student_read_statuses', to='core.assignment')),
+                ('student', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE,
+                 related_name='assignment_read_statuses', to='core.student')),
             ],
             options={
                 'verbose_name': 'Student Assignment Read Status',

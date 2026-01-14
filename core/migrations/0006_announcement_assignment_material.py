@@ -14,32 +14,39 @@ class Migration(migrations.Migration):
         migrations.CreateModel(
             name='Announcement',
             fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
+                ('id', models.BigAutoField(auto_created=True,
+                 primary_key=True, serialize=False, verbose_name='ID')),
                 ('title', models.CharField(max_length=255, verbose_name='Title')),
                 ('content', models.TextField(verbose_name='Content')),
                 ('posted_at', models.DateTimeField(auto_now_add=True)),
-                ('clazz', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='announcements', to='core.clazz', verbose_name='Class')),
+                ('clazz', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE,
+                 related_name='announcements', to='core.clazz', verbose_name='Class')),
             ],
         ),
         migrations.CreateModel(
             name='Assignment',
             fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
+                ('id', models.BigAutoField(auto_created=True,
+                 primary_key=True, serialize=False, verbose_name='ID')),
                 ('title', models.CharField(max_length=255, verbose_name='Title')),
                 ('description', models.TextField(verbose_name='Description')),
                 ('due_date', models.DateTimeField(verbose_name='Due Date')),
                 ('created_at', models.DateTimeField(auto_now_add=True)),
-                ('clazz', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='assignments', to='core.clazz', verbose_name='Class')),
+                ('clazz', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE,
+                 related_name='assignments', to='core.clazz', verbose_name='Class')),
             ],
         ),
         migrations.CreateModel(
             name='Material',
             fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
+                ('id', models.BigAutoField(auto_created=True,
+                 primary_key=True, serialize=False, verbose_name='ID')),
                 ('title', models.CharField(max_length=255, verbose_name='Title')),
-                ('file', models.FileField(upload_to='class_materials/', verbose_name='File')),
+                ('file', models.FileField(
+                    upload_to='class_materials/', verbose_name='File')),
                 ('uploaded_at', models.DateTimeField(auto_now_add=True)),
-                ('clazz', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='materials', to='core.clazz', verbose_name='Class')),
+                ('clazz', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE,
+                 related_name='materials', to='core.clazz', verbose_name='Class')),
             ],
         ),
     ]

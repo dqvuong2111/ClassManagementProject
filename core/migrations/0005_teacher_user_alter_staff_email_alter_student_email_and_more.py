@@ -16,21 +16,25 @@ class Migration(migrations.Migration):
         migrations.AddField(
             model_name='teacher',
             name='user',
-            field=models.OneToOneField(blank=True, null=True, on_delete=django.db.models.deletion.CASCADE, to=settings.AUTH_USER_MODEL),
+            field=models.OneToOneField(
+                blank=True, null=True, on_delete=django.db.models.deletion.CASCADE, to=settings.AUTH_USER_MODEL),
         ),
         migrations.AlterField(
             model_name='staff',
             name='email',
-            field=models.EmailField(max_length=254, verbose_name='Email Address'),
+            field=models.EmailField(
+                max_length=254, verbose_name='Email Address'),
         ),
         migrations.AlterField(
             model_name='student',
             name='email',
-            field=models.EmailField(max_length=254, verbose_name='Email Address'),
+            field=models.EmailField(
+                max_length=254, verbose_name='Email Address'),
         ),
         migrations.AlterField(
             model_name='teacher',
             name='email',
-            field=models.EmailField(max_length=254, verbose_name='Email Address'),
+            field=models.EmailField(
+                max_length=254, verbose_name='Email Address'),
         ),
     ]

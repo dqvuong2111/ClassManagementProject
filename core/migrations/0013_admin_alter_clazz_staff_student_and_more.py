@@ -19,13 +19,17 @@ class Migration(migrations.Migration):
                 ('admin_id', models.AutoField(primary_key=True, serialize=False)),
                 ('full_name', models.CharField(max_length=100)),
                 ('dob', models.DateField(verbose_name='Date of Birth')),
-                ('phone_number', models.CharField(max_length=15, verbose_name='Phone Number')),
-                ('email', models.EmailField(max_length=254, verbose_name='Email Address')),
+                ('phone_number', models.CharField(
+                    max_length=15, verbose_name='Phone Number')),
+                ('email', models.EmailField(
+                    max_length=254, verbose_name='Email Address')),
                 ('address', models.CharField(max_length=255, verbose_name='Address')),
-                ('position', models.CharField(blank=True, max_length=100, null=True, verbose_name='Position')),
+                ('position', models.CharField(blank=True,
+                 max_length=100, null=True, verbose_name='Position')),
                 ('created_at', models.DateTimeField(auto_now_add=True)),
                 ('updated_at', models.DateTimeField(auto_now=True)),
-                ('user', models.OneToOneField(blank=True, null=True, on_delete=django.db.models.deletion.CASCADE, related_name='admin_profile', to=settings.AUTH_USER_MODEL)),
+                ('user', models.OneToOneField(blank=True, null=True, on_delete=django.db.models.deletion.CASCADE,
+                 related_name='admin_profile', to=settings.AUTH_USER_MODEL)),
             ],
             options={
                 'verbose_name': 'Admin',
@@ -35,7 +39,8 @@ class Migration(migrations.Migration):
         migrations.AlterField(
             model_name='clazz',
             name='staff',
-            field=models.ForeignKey(null=True, on_delete=django.db.models.deletion.SET_NULL, related_name='classes_managed', to='core.admin', verbose_name='Assigned Staff'),
+            field=models.ForeignKey(null=True, on_delete=django.db.models.deletion.SET_NULL,
+                                    related_name='classes_managed', to='core.admin', verbose_name='Assigned Staff'),
         ),
         migrations.CreateModel(
             name='Student',
@@ -43,12 +48,15 @@ class Migration(migrations.Migration):
                 ('student_id', models.AutoField(primary_key=True, serialize=False)),
                 ('full_name', models.CharField(max_length=100)),
                 ('dob', models.DateField(verbose_name='Date of Birth')),
-                ('phone_number', models.CharField(max_length=15, verbose_name='Phone Number')),
-                ('email', models.EmailField(max_length=254, verbose_name='Email Address')),
+                ('phone_number', models.CharField(
+                    max_length=15, verbose_name='Phone Number')),
+                ('email', models.EmailField(
+                    max_length=254, verbose_name='Email Address')),
                 ('address', models.CharField(max_length=255, verbose_name='Address')),
                 ('created_at', models.DateTimeField(auto_now_add=True)),
                 ('updated_at', models.DateTimeField(auto_now=True)),
-                ('user', models.OneToOneField(blank=True, null=True, on_delete=django.db.models.deletion.CASCADE, related_name='student_profile', to=settings.AUTH_USER_MODEL)),
+                ('user', models.OneToOneField(blank=True, null=True, on_delete=django.db.models.deletion.CASCADE,
+                 related_name='student_profile', to=settings.AUTH_USER_MODEL)),
             ],
             options={
                 'verbose_name': 'Student',
@@ -62,22 +70,26 @@ class Migration(migrations.Migration):
         migrations.AddField(
             model_name='contentreadstatus',
             name='student',
-            field=models.ForeignKey(blank=True, null=True, on_delete=django.db.models.deletion.CASCADE, related_name='read_statuses', to='core.student', verbose_name='Student'),
+            field=models.ForeignKey(blank=True, null=True, on_delete=django.db.models.deletion.CASCADE,
+                                    related_name='read_statuses', to='core.student', verbose_name='Student'),
         ),
         migrations.AlterField(
             model_name='assignmentsubmission',
             name='student',
-            field=models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='submissions', to='core.student', verbose_name='Student'),
+            field=models.ForeignKey(on_delete=django.db.models.deletion.CASCADE,
+                                    related_name='submissions', to='core.student', verbose_name='Student'),
         ),
         migrations.AlterField(
             model_name='enrollment',
             name='student',
-            field=models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='enrollments', to='core.student', verbose_name='Student'),
+            field=models.ForeignKey(on_delete=django.db.models.deletion.CASCADE,
+                                    related_name='enrollments', to='core.student', verbose_name='Student'),
         ),
         migrations.AlterField(
             model_name='feedback',
             name='student',
-            field=models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='feedbacks', to='core.student', verbose_name='Student'),
+            field=models.ForeignKey(on_delete=django.db.models.deletion.CASCADE,
+                                    related_name='feedbacks', to='core.student', verbose_name='Student'),
         ),
         migrations.AlterUniqueTogether(
             name='contentreadstatus',
@@ -89,13 +101,17 @@ class Migration(migrations.Migration):
                 ('teacher_id', models.AutoField(primary_key=True, serialize=False)),
                 ('full_name', models.CharField(max_length=100)),
                 ('dob', models.DateField(verbose_name='Date of Birth')),
-                ('phone_number', models.CharField(max_length=15, verbose_name='Phone Number')),
-                ('email', models.EmailField(max_length=254, verbose_name='Email Address')),
+                ('phone_number', models.CharField(
+                    max_length=15, verbose_name='Phone Number')),
+                ('email', models.EmailField(
+                    max_length=254, verbose_name='Email Address')),
                 ('address', models.CharField(max_length=255, verbose_name='Address')),
-                ('qualification', models.CharField(blank=True, max_length=100, null=True, verbose_name='Qualification')),
+                ('qualification', models.CharField(blank=True,
+                 max_length=100, null=True, verbose_name='Qualification')),
                 ('created_at', models.DateTimeField(auto_now_add=True)),
                 ('updated_at', models.DateTimeField(auto_now=True)),
-                ('user', models.OneToOneField(blank=True, null=True, on_delete=django.db.models.deletion.CASCADE, related_name='teacher_profile', to=settings.AUTH_USER_MODEL)),
+                ('user', models.OneToOneField(blank=True, null=True, on_delete=django.db.models.deletion.CASCADE,
+                 related_name='teacher_profile', to=settings.AUTH_USER_MODEL)),
             ],
             options={
                 'verbose_name': 'Teacher',
@@ -105,7 +121,8 @@ class Migration(migrations.Migration):
         migrations.AlterField(
             model_name='clazz',
             name='teacher',
-            field=models.ForeignKey(null=True, on_delete=django.db.models.deletion.SET_NULL, related_name='classes_taught', to='core.teacher', verbose_name='Assigned Teacher'),
+            field=models.ForeignKey(null=True, on_delete=django.db.models.deletion.SET_NULL,
+                                    related_name='classes_taught', to='core.teacher', verbose_name='Assigned Teacher'),
         ),
         migrations.RemoveField(
             model_name='contentreadstatus',

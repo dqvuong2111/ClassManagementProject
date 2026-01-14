@@ -13,6 +13,7 @@ class Migration(migrations.Migration):
         migrations.AddField(
             model_name='enrollment',
             name='is_paid',
-            field=models.BooleanField(default=False, verbose_name='Payment Status'),
+            field=models.BooleanField(
+                default=False, verbose_name='Payment Status'),
         ),
     ]

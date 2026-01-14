@@ -23,23 +23,31 @@ class Migration(migrations.Migration):
             name='AttendanceSession',
             fields=[
                 ('session_id', models.AutoField(primary_key=True, serialize=False)),
-                ('date', models.DateField(default=django.utils.timezone.now, verbose_name='Date')),
-                ('token', models.CharField(max_length=64, unique=True, verbose_name='Session Token')),
-                ('is_active', models.BooleanField(default=True, verbose_name='Is Active')),
+                ('date', models.DateField(
+                    default=django.utils.timezone.now, verbose_name='Date')),
+                ('token', models.CharField(max_length=64,
+                 unique=True, verbose_name='Session Token')),
+                ('is_active', models.BooleanField(
+                    default=True, verbose_name='Is Active')),
                 ('created_at', models.DateTimeField(auto_now_add=True)),
-                ('clazz', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='attendance_sessions', to='core.clazz', verbose_name='Class')),
+                ('clazz', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE,
+                 related_name='attendance_sessions', to='core.clazz', verbose_name='Class')),
             ],
         ),
         migrations.CreateModel(
             name='Message',
             fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
+                ('id', models.BigAutoField(auto_created=True,
+                 primary_key=True, serialize=False, verbose_name='ID')),
                 ('subject', models.CharField(max_length=255, verbose_name='Subject')),
                 ('body', models.TextField(verbose_name='Body')),
-                ('is_read', models.BooleanField(default=False, verbose_name='Is Read')),
+                ('is_read', models.BooleanField(
+                    default=False, verbose_name='Is Read')),
                 ('created_at', models.DateTimeField(auto_now_add=True)),
-                ('recipient', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='received_messages', to=settings.AUTH_USER_MODEL, verbose_name='Recipient')),
-                ('sender', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='sent_messages', to=settings.AUTH_USER_MODEL, verbose_name='Sender')),
+                ('recipient', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE,
+                 related_name='received_messages', to=settings.AUTH_USER_MODEL, verbose_name='Recipient')),
+                ('sender', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE,
+                 related_name='sent_messages', to=settings.AUTH_USER_MODEL, verbose_name='Sender')),
             ],
             options={
                 'ordering': ['-created_at'],

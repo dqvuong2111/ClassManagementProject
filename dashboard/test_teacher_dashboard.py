@@ -5,10 +5,12 @@ from django.utils import timezone
 from core.models import Student, Clazz, ClassType, Enrollment, Teacher, Attendance, Schedule
 import datetime
 
+
 class TeacherDashboardTests(TestCase):
     def setUp(self):
         # Create teacher user
-        self.teacher_user = User.objects.create_user('teacher', 'teacher@example.com', 'password')
+        self.teacher_user = User.objects.create_user(
+            'teacher', 'teacher@example.com', 'password')
         self.teacher = Teacher.objects.create(
             user=self.teacher_user,
             full_name="Test Teacher",
@@ -20,7 +22,8 @@ class TeacherDashboardTests(TestCase):
         self.client.force_login(self.teacher_user)
 
         # Create dummy data
-        self.class_type = ClassType.objects.create(code="MATH", description="Math class")
+        self.class_type = ClassType.objects.create(
+            code="MATH", description="Math class")
         self.clazz = Clazz.objects.create(
             class_name="Math 101",
             class_type=self.class_type,
@@ -31,10 +34,11 @@ class TeacherDashboardTests(TestCase):
             end_date=datetime.date.today() + datetime.timedelta(days=10)
         )
         self.student = Student.objects.create(
-            user=User.objects.create_user('student', 'student@example.com', 'password'),
+            user=User.objects.create_user(
+                'student', 'student@example.com', 'password'),
             full_name="Test Student",
             email="student@example.com",
-             dob=datetime.date(2000, 1, 1)
+            dob=datetime.date(2000, 1, 1)
         )
         self.enrollment = Enrollment.objects.create(
             student=self.student,
@@ -42,7 +46,7 @@ class TeacherDashboardTests(TestCase):
             status='approved',
             is_paid=True
         )
-        
+
         # Add schedule
         self.schedule = Schedule.objects.create(
             clazz=self.clazz,
@@ -61,10 +65,10 @@ class TeacherDashboardTests(TestCase):
     def test_teacher_dashboard_access(self):
         url = reverse('dashboard:teacher_dashboard')
         response = self.client.get(url)
-        
+
         self.assertEqual(response.status_code, 200)
         self.assertTemplateUsed(response, 'dashboard/teacher_dashboard.html')
-        
+
         # Verify context data
         self.assertEqual(response.context['teacher'], self.teacher)
         # Check if total_students is calculated correctly

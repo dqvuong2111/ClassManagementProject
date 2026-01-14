@@ -17,7 +17,8 @@ class Migration(migrations.Migration):
             name='ClassType',
             fields=[
                 ('type_id', models.AutoField(primary_key=True, serialize=False)),
-                ('code', models.CharField(max_length=10, unique=True, verbose_name='Class Type Code')),
+                ('code', models.CharField(max_length=10,
+                 unique=True, verbose_name='Class Type Code')),
                 ('description', models.TextField(verbose_name='Description')),
                 ('created_at', models.DateTimeField(auto_now_add=True)),
                 ('updated_at', models.DateTimeField(auto_now=True)),
@@ -28,13 +29,16 @@ class Migration(migrations.Migration):
             fields=[
                 ('full_name', models.CharField(max_length=100)),
                 ('dob', models.DateField(verbose_name='Date of Birth')),
-                ('phone_number', models.CharField(max_length=15, verbose_name='Phone Number')),
+                ('phone_number', models.CharField(
+                    max_length=15, verbose_name='Phone Number')),
                 ('email', models.EmailField(max_length=254, unique=True)),
                 ('address', models.CharField(max_length=255, verbose_name='Address')),
                 ('created_at', models.DateTimeField(auto_now_add=True)),
                 ('updated_at', models.DateTimeField(auto_now=True)),
-                ('staff_id', models.AutoField(primary_key=True, serialize=False, verbose_name='Staff ID')),
-                ('position', models.CharField(max_length=100, verbose_name='Position')),
+                ('staff_id', models.AutoField(primary_key=True,
+                 serialize=False, verbose_name='Staff ID')),
+                ('position', models.CharField(
+                    max_length=100, verbose_name='Position')),
             ],
             options={
                 'abstract': False,
@@ -45,7 +49,8 @@ class Migration(migrations.Migration):
             fields=[
                 ('full_name', models.CharField(max_length=100)),
                 ('dob', models.DateField(verbose_name='Date of Birth')),
-                ('phone_number', models.CharField(max_length=15, verbose_name='Phone Number')),
+                ('phone_number', models.CharField(
+                    max_length=15, verbose_name='Phone Number')),
                 ('email', models.EmailField(max_length=254, unique=True)),
                 ('address', models.CharField(max_length=255, verbose_name='Address')),
                 ('created_at', models.DateTimeField(auto_now_add=True)),
@@ -61,13 +66,15 @@ class Migration(migrations.Migration):
             fields=[
                 ('full_name', models.CharField(max_length=100)),
                 ('dob', models.DateField(verbose_name='Date of Birth')),
-                ('phone_number', models.CharField(max_length=15, verbose_name='Phone Number')),
+                ('phone_number', models.CharField(
+                    max_length=15, verbose_name='Phone Number')),
                 ('email', models.EmailField(max_length=254, unique=True)),
                 ('address', models.CharField(max_length=255, verbose_name='Address')),
                 ('created_at', models.DateTimeField(auto_now_add=True)),
                 ('updated_at', models.DateTimeField(auto_now=True)),
                 ('teacher_id', models.AutoField(primary_key=True, serialize=False)),
-                ('qualification', models.CharField(max_length=100, verbose_name='Qualification')),
+                ('qualification', models.CharField(
+                    max_length=100, verbose_name='Qualification')),
             ],
             options={
                 'abstract': False,
@@ -77,17 +84,23 @@ class Migration(migrations.Migration):
             name='Clazz',
             fields=[
                 ('class_id', models.AutoField(primary_key=True, serialize=False)),
-                ('class_name', models.CharField(max_length=100, verbose_name='Class Name')),
+                ('class_name', models.CharField(
+                    max_length=100, verbose_name='Class Name')),
                 ('start_date', models.DateField(verbose_name='Start Date')),
                 ('end_date', models.DateField(verbose_name='End Date')),
-                ('price', models.DecimalField(decimal_places=2, max_digits=10, verbose_name='Price')),
+                ('price', models.DecimalField(decimal_places=2,
+                 max_digits=10, verbose_name='Price')),
                 ('room', models.CharField(max_length=50, verbose_name='Room')),
                 ('created_at', models.DateTimeField(auto_now_add=True)),
                 ('updated_at', models.DateTimeField(auto_now=True)),
-                ('image', models.ImageField(default='class_images/default_class.png', upload_to='class_images/', verbose_name='Class Image')),
-                ('class_type', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='core.classtype', verbose_name='Class Type')),
-                ('staff', models.ForeignKey(null=True, on_delete=django.db.models.deletion.SET_NULL, to='core.staff', verbose_name='Assigned Staff')),
-                ('teacher', models.ForeignKey(null=True, on_delete=django.db.models.deletion.SET_NULL, related_name='classes', to='core.teacher', verbose_name='Assigned Teacher')),
+                ('image', models.ImageField(default='class_images/default_class.png',
+                 upload_to='class_images/', verbose_name='Class Image')),
+                ('class_type', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE,
+                 to='core.classtype', verbose_name='Class Type')),
+                ('staff', models.ForeignKey(null=True, on_delete=django.db.models.deletion.SET_NULL,
+                 to='core.staff', verbose_name='Assigned Staff')),
+                ('teacher', models.ForeignKey(null=True, on_delete=django.db.models.deletion.SET_NULL,
+                 related_name='classes', to='core.teacher', verbose_name='Assigned Teacher')),
             ],
             options={
                 'verbose_name_plural': 'Classes',
@@ -96,18 +109,28 @@ class Migration(migrations.Migration):
         migrations.CreateModel(
             name='Enrollment',
             fields=[
-                ('enrollment_id', models.AutoField(primary_key=True, serialize=False)),
-                ('enrollment_date', models.DateField(default=django.utils.timezone.now, verbose_name='Enrollment Date')),
-                ('minitest1', models.FloatField(blank=True, null=True, verbose_name='Mini Test 1 Score')),
-                ('minitest2', models.FloatField(blank=True, null=True, verbose_name='Mini Test 2 Score')),
-                ('minitest3', models.FloatField(blank=True, null=True, verbose_name='Mini Test 3 Score')),
-                ('minitest4', models.FloatField(blank=True, null=True, verbose_name='Mini Test 4 Score')),
-                ('midterm', models.FloatField(blank=True, null=True, verbose_name='Midterm Score')),
-                ('final_test', models.FloatField(blank=True, null=True, verbose_name='Final Test Score')),
+                ('enrollment_id', models.AutoField(
+                    primary_key=True, serialize=False)),
+                ('enrollment_date', models.DateField(
+                    default=django.utils.timezone.now, verbose_name='Enrollment Date')),
+                ('minitest1', models.FloatField(blank=True,
+                 null=True, verbose_name='Mini Test 1 Score')),
+                ('minitest2', models.FloatField(blank=True,
+                 null=True, verbose_name='Mini Test 2 Score')),
+                ('minitest3', models.FloatField(blank=True,
+                 null=True, verbose_name='Mini Test 3 Score')),
+                ('minitest4', models.FloatField(blank=True,
+                 null=True, verbose_name='Mini Test 4 Score')),
+                ('midterm', models.FloatField(blank=True,
+                 null=True, verbose_name='Midterm Score')),
+                ('final_test', models.FloatField(blank=True,
+                 null=True, verbose_name='Final Test Score')),
                 ('created_at', models.DateTimeField(auto_now_add=True)),
                 ('updated_at', models.DateTimeField(auto_now=True)),
-                ('clazz', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='enrollments', to='core.clazz', verbose_name='Class')),
-                ('student', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='enrollments', to='core.student', verbose_name='Student')),
+                ('clazz', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE,
+                 related_name='enrollments', to='core.clazz', verbose_name='Class')),
+                ('student', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE,
+                 related_name='enrollments', to='core.student', verbose_name='Student')),
             ],
             options={
                 'verbose_name_plural': 'Enrollments',
@@ -117,12 +140,15 @@ class Migration(migrations.Migration):
         migrations.CreateModel(
             name='Attendance',
             fields=[
-                ('attendance_id', models.AutoField(primary_key=True, serialize=False)),
+                ('attendance_id', models.AutoField(
+                    primary_key=True, serialize=False)),
                 ('date', models.DateField(verbose_name='Date')),
-                ('status', models.CharField(choices=[('Present', 'Present'), ('Absent', 'Absent'), ('Excused', 'Excused')], max_length=20, verbose_name='Status')),
+                ('status', models.CharField(choices=[('Present', 'Present'), ('Absent', 'Absent'), (
+                    'Excused', 'Excused')], max_length=20, verbose_name='Status')),
                 ('created_at', models.DateTimeField(auto_now_add=True)),
                 ('updated_at', models.DateTimeField(auto_now=True)),
-                ('enrollment', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='attendances', to='core.enrollment', verbose_name='Enrollment')),
+                ('enrollment', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE,
+                 related_name='attendances', to='core.enrollment', verbose_name='Enrollment')),
             ],
             options={
                 'verbose_name_plural': 'Attendance',
@@ -131,13 +157,16 @@ class Migration(migrations.Migration):
         migrations.CreateModel(
             name='Schedule',
             fields=[
-                ('schedule_id', models.AutoField(primary_key=True, serialize=False)),
-                ('day_of_week', models.CharField(help_text="e.g., 'Monday, Wednesday, Friday'", max_length=50, verbose_name='Day of the Week')),
+                ('schedule_id', models.AutoField(
+                    primary_key=True, serialize=False)),
+                ('day_of_week', models.CharField(help_text="e.g., 'Monday, Wednesday, Friday'",
+                 max_length=50, verbose_name='Day of the Week')),
                 ('start_time', models.TimeField()),
                 ('end_time', models.TimeField()),
                 ('created_at', models.DateTimeField(auto_now_add=True)),
                 ('updated_at', models.DateTimeField(auto_now=True)),
-                ('clazz', models.OneToOneField(on_delete=django.db.models.deletion.CASCADE, related_name='schedule', to='core.clazz', verbose_name='Class')),
+                ('clazz', models.OneToOneField(on_delete=django.db.models.deletion.CASCADE,
+                 related_name='schedule', to='core.clazz', verbose_name='Class')),
             ],
             options={
                 'verbose_name_plural': 'Schedules',
@@ -146,14 +175,20 @@ class Migration(migrations.Migration):
         migrations.CreateModel(
             name='Feedback',
             fields=[
-                ('feedback_id', models.AutoField(primary_key=True, serialize=False)),
-                ('teacher_rate', models.DecimalField(decimal_places=2, help_text='Rating from 1-10', max_digits=3, verbose_name='Teacher Rating')),
-                ('class_rate', models.DecimalField(decimal_places=2, help_text='Rating from 1-10', max_digits=3, verbose_name='Class Rating')),
+                ('feedback_id', models.AutoField(
+                    primary_key=True, serialize=False)),
+                ('teacher_rate', models.DecimalField(decimal_places=2,
+                 help_text='Rating from 1-10', max_digits=3, verbose_name='Teacher Rating')),
+                ('class_rate', models.DecimalField(decimal_places=2,
+                 help_text='Rating from 1-10', max_digits=3, verbose_name='Class Rating')),
                 ('created_at', models.DateTimeField(auto_now_add=True)),
                 ('updated_at', models.DateTimeField(auto_now=True)),
-                ('clazz', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='feedbacks', to='core.clazz', verbose_name='Class')),
-                ('student', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='feedbacks', to='core.student', verbose_name='Student')),
-                ('teacher', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='feedbacks', to='core.teacher', verbose_name='Teacher')),
+                ('clazz', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE,
+                 related_name='feedbacks', to='core.clazz', verbose_name='Class')),
+                ('student', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE,
+                 related_name='feedbacks', to='core.student', verbose_name='Student')),
+                ('teacher', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE,
+                 related_name='feedbacks', to='core.teacher', verbose_name='Teacher')),
             ],
             options={
                 'verbose_name_plural': 'Feedback',

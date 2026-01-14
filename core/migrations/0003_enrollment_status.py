@@ -13,6 +13,7 @@ class Migration(migrations.Migration):
         migrations.AddField(
             model_name='enrollment',
             name='status',
-            field=models.CharField(choices=[('pending', 'Pending'), ('approved', 'Approved'), ('rejected', 'Rejected')], default='pending', max_length=20, verbose_name='Status'),
+            field=models.CharField(choices=[('pending', 'Pending'), ('approved', 'Approved'), (
+                'rejected', 'Rejected')], default='pending', max_length=20, verbose_name='Status'),
         ),
     ]

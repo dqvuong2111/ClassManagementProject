@@ -15,8 +15,10 @@ class Migration(migrations.Migration):
             name='DayOfWeek',
             fields=[
                 ('day_id', models.AutoField(primary_key=True, serialize=False)),
-                ('name', models.CharField(max_length=10, unique=True, verbose_name='Day Name')),
-                ('abbreviation', models.CharField(max_length=3, verbose_name='Abbreviation')),
+                ('name', models.CharField(max_length=10,
+                 unique=True, verbose_name='Day Name')),
+                ('abbreviation', models.CharField(
+                    max_length=3, verbose_name='Abbreviation')),
                 ('order', models.IntegerField(unique=True, verbose_name='Day Order')),
             ],
             options={
@@ -29,9 +31,12 @@ class Migration(migrations.Migration):
             name='GradeType',
             fields=[
                 ('type_id', models.AutoField(primary_key=True, serialize=False)),
-                ('name', models.CharField(max_length=50, unique=True, verbose_name='Grade Type Name')),
-                ('weight', models.FloatField(default=1.0, help_text='Weight for grade calculation', verbose_name='Weight')),
-                ('display_order', models.IntegerField(default=0, verbose_name='Display Order')),
+                ('name', models.CharField(max_length=50,
+                 unique=True, verbose_name='Grade Type Name')),
+                ('weight', models.FloatField(
+                    default=1.0, help_text='Weight for grade calculation', verbose_name='Weight')),
+                ('display_order', models.IntegerField(
+                    default=0, verbose_name='Display Order')),
                 ('created_at', models.DateTimeField(auto_now_add=True)),
                 ('updated_at', models.DateTimeField(auto_now=True)),
             ],
@@ -44,12 +49,14 @@ class Migration(migrations.Migration):
         migrations.AlterField(
             model_name='feedback',
             name='teacher',
-            field=models.ForeignKey(blank=True, null=True, on_delete=django.db.models.deletion.CASCADE, related_name='feedbacks', to='core.teacher', verbose_name='Teacher'),
+            field=models.ForeignKey(blank=True, null=True, on_delete=django.db.models.deletion.CASCADE,
+                                    related_name='feedbacks', to='core.teacher', verbose_name='Teacher'),
         ),
         migrations.AlterField(
             model_name='schedule',
             name='day_of_week',
-            field=models.CharField(blank=True, default='', help_text="e.g., 'Monday, Wednesday, Friday'", max_length=50, verbose_name='Day of the Week'),
+            field=models.CharField(blank=True, default='', help_text="e.g., 'Monday, Wednesday, Friday'",
+                                   max_length=50, verbose_name='Day of the Week'),
         ),
         migrations.CreateModel(
             name='Grade',
@@ -58,8 +65,10 @@ class Migration(migrations.Migration):
                 ('score', models.FloatField(verbose_name='Score')),
                 ('created_at', models.DateTimeField(auto_now_add=True)),
                 ('updated_at', models.DateTimeField(auto_now=True)),
-                ('enrollment', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='grades', to='core.enrollment', verbose_name='Enrollment')),
-                ('grade_type', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='core.gradetype', verbose_name='Grade Type')),
+                ('enrollment', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE,
+                 related_name='grades', to='core.enrollment', verbose_name='Enrollment')),
+                ('grade_type', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE,
+                 to='core.gradetype', verbose_name='Grade Type')),
             ],
             options={
                 'verbose_name': 'Grade',
@@ -71,9 +80,12 @@ class Migration(migrations.Migration):
         migrations.CreateModel(
             name='ScheduleDay',
             fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('day', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='core.dayofweek', verbose_name='Day of Week')),
-                ('schedule', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='schedule_days', to='core.schedule', verbose_name='Schedule')),
+                ('id', models.BigAutoField(auto_created=True,
+                 primary_key=True, serialize=False, verbose_name='ID')),
+                ('day', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE,
+                 to='core.dayofweek', verbose_name='Day of Week')),
+                ('schedule', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE,
+                 related_name='schedule_days', to='core.schedule', verbose_name='Schedule')),
             ],
             options={
                 'verbose_name': 'Schedule Day',

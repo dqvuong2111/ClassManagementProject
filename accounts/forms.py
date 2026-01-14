@@ -8,18 +8,21 @@ class SimpleSignUpForm(UserCreationForm):
         ('student', 'Student'),
         ('teacher', 'Teacher'),
     ]
-    role = forms.ChoiceField(choices=ROLE_CHOICES, widget=forms.RadioSelect, initial='student', label="I am a")
+    role = forms.ChoiceField(
+        choices=ROLE_CHOICES, widget=forms.RadioSelect, initial='student', label="I am a")
     full_name = forms.CharField(max_length=100, required=True)
-    dob = forms.DateField(required=True, widget=forms.DateInput(attrs={'type': 'date'}), label="Date of Birth")
+    dob = forms.DateField(required=True, widget=forms.DateInput(
+        attrs={'type': 'date'}), label="Date of Birth")
     phone_number = forms.CharField(max_length=15, required=True)
     email = forms.EmailField(required=True)
     address = forms.CharField(max_length=255, required=True)
-    qualification = forms.CharField(max_length=100, required=False, help_text="Required if signing up as a Teacher")
+    qualification = forms.CharField(
+        max_length=100, required=False, help_text="Required if signing up as a Teacher")
 
     def __init__(self, *args, **kwargs):
         super(SimpleSignUpForm, self).__init__(*args, **kwargs)
         for field in self.fields:
-            if field != 'role': # Don't add form-control to radio buttons
+            if field != 'role':  # Don't add form-control to radio buttons
                 self.fields[field].widget.attrs.update({
                     'class': 'form-control rounded-pill'
                 })
@@ -30,8 +33,9 @@ class SimpleSignUpForm(UserCreationForm):
         qualification = cleaned_data.get('qualification')
 
         if role == 'teacher' and not qualification:
-            self.add_error('qualification', "Qualification is required for teachers.")
-        
+            self.add_error('qualification',
+                           "Qualification is required for teachers.")
+
         return cleaned_data
 
     def clean_email(self):

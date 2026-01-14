@@ -28,7 +28,8 @@ class ClassForm(BootstrapFormMixin, forms.ModelForm):
 class TeacherForm(BootstrapFormMixin, forms.ModelForm):
     class Meta:
         model = Teacher
-        fields = ['full_name', 'dob', 'phone_number', 'email', 'address', 'qualification']
+        fields = ['full_name', 'dob', 'phone_number',
+                  'email', 'address', 'qualification']
         widgets = {
             'dob': forms.DateInput(attrs={'type': 'date'}),
         }
@@ -46,7 +47,8 @@ class StudentForm(BootstrapFormMixin, forms.ModelForm):
 class StaffForm(BootstrapFormMixin, forms.ModelForm):
     class Meta:
         model = Admin
-        fields = ['full_name', 'dob', 'phone_number', 'email', 'address', 'position']
+        fields = ['full_name', 'dob', 'phone_number',
+                  'email', 'address', 'position']
         widgets = {
             'dob': forms.DateInput(attrs={'type': 'date'}),
         }
@@ -127,7 +129,8 @@ class AssignmentGradingForm(BootstrapFormMixin, forms.ModelForm):
 
 
 class AssignmentCreateForm(BootstrapFormMixin, forms.ModelForm):
-    clazz = forms.ModelChoiceField(queryset=Clazz.objects.none(), label="Class")
+    clazz = forms.ModelChoiceField(
+        queryset=Clazz.objects.none(), label="Class")
 
     class Meta:
         model = Assignment
@@ -141,7 +144,8 @@ class AssignmentCreateForm(BootstrapFormMixin, forms.ModelForm):
         teacher = kwargs.pop('teacher', None)
         super().__init__(*args, **kwargs)
         if teacher:
-            self.fields['clazz'].queryset = Clazz.objects.filter(teacher=teacher)
+            self.fields['clazz'].queryset = Clazz.objects.filter(
+                teacher=teacher)
 
 
 class MessageForm(BootstrapFormMixin, forms.ModelForm):

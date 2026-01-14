@@ -15,27 +15,33 @@ class Migration(migrations.Migration):
     operations = [
         migrations.AlterModelOptions(
             name='attendance',
-            options={'verbose_name': 'Attendance', 'verbose_name_plural': 'Attendance'},
+            options={'verbose_name': 'Attendance',
+                     'verbose_name_plural': 'Attendance'},
         ),
         migrations.AlterModelOptions(
             name='clazz',
-            options={'verbose_name': 'Class', 'verbose_name_plural': 'Classes'},
+            options={'verbose_name': 'Class',
+                     'verbose_name_plural': 'Classes'},
         ),
         migrations.AlterModelOptions(
             name='enrollment',
-            options={'verbose_name': 'Enrollment', 'verbose_name_plural': 'Enrollments'},
+            options={'verbose_name': 'Enrollment',
+                     'verbose_name_plural': 'Enrollments'},
         ),
         migrations.AlterModelOptions(
             name='feedback',
-            options={'verbose_name': 'Feedback', 'verbose_name_plural': 'Feedback'},
+            options={'verbose_name': 'Feedback',
+                     'verbose_name_plural': 'Feedback'},
         ),
         migrations.AlterModelOptions(
             name='schedule',
-            options={'verbose_name': 'Schedule', 'verbose_name_plural': 'Schedules'},
+            options={'verbose_name': 'Schedule',
+                     'verbose_name_plural': 'Schedules'},
         ),
         migrations.AddField(
             model_name='student',
             name='user',
-            field=models.OneToOneField(blank=True, null=True, on_delete=django.db.models.deletion.CASCADE, to=settings.AUTH_USER_MODEL),
+            field=models.OneToOneField(
+                blank=True, null=True, on_delete=django.db.models.deletion.CASCADE, to=settings.AUTH_USER_MODEL),
         ),
     ]

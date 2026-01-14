@@ -13,6 +13,7 @@ class Migration(migrations.Migration):
         migrations.AddField(
             model_name='attendancesession',
             name='passcode',
-            field=models.CharField(default='0000', max_length=4, verbose_name='Session Passcode'),
+            field=models.CharField(
+                default='0000', max_length=4, verbose_name='Session Passcode'),
         ),
     ]

@@ -14,13 +14,19 @@ class Migration(migrations.Migration):
         migrations.CreateModel(
             name='AssignmentSubmission',
             fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('submission_file', models.FileField(upload_to='assignment_submissions/', verbose_name='Submission File')),
-                ('submitted_at', models.DateTimeField(auto_now_add=True, verbose_name='Submitted At')),
-                ('grade', models.FloatField(blank=True, null=True, verbose_name='Grade')),
+                ('id', models.BigAutoField(auto_created=True,
+                 primary_key=True, serialize=False, verbose_name='ID')),
+                ('submission_file', models.FileField(
+                    upload_to='assignment_submissions/', verbose_name='Submission File')),
+                ('submitted_at', models.DateTimeField(
+                    auto_now_add=True, verbose_name='Submitted At')),
+                ('grade', models.FloatField(
+                    blank=True, null=True, verbose_name='Grade')),
                 ('feedback', models.TextField(blank=True, verbose_name='Feedback')),
-                ('assignment', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='submissions', to='core.assignment', verbose_name='Assignment')),
-                ('student', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='submissions', to='core.student', verbose_name='Student')),
+                ('assignment', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE,
+                 related_name='submissions', to='core.assignment', verbose_name='Assignment')),
+                ('student', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE,
+                 related_name='submissions', to='core.student', verbose_name='Student')),
             ],
             options={
                 'verbose_name': 'Assignment Submission',

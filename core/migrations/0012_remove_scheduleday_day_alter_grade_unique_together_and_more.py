@@ -72,63 +72,78 @@ class Migration(migrations.Migration):
         migrations.AddField(
             model_name='clazz',
             name='day_of_week',
-            field=models.CharField(blank=True, help_text="e.g., 'Monday, Wednesday'", max_length=100, null=True, verbose_name='Days of Week'),
+            field=models.CharField(blank=True, help_text="e.g., 'Monday, Wednesday'",
+                                   max_length=100, null=True, verbose_name='Days of Week'),
         ),
         migrations.AddField(
             model_name='clazz',
             name='end_time',
-            field=models.TimeField(blank=True, null=True, verbose_name='End Time'),
+            field=models.TimeField(blank=True, null=True,
+                                   verbose_name='End Time'),
         ),
         migrations.AddField(
             model_name='clazz',
             name='start_time',
-            field=models.TimeField(blank=True, null=True, verbose_name='Start Time'),
+            field=models.TimeField(blank=True, null=True,
+                                   verbose_name='Start Time'),
         ),
         migrations.AlterField(
             model_name='enrollment',
             name='final_test',
-            field=models.FloatField(blank=True, null=True, verbose_name='Final Test'),
+            field=models.FloatField(
+                blank=True, null=True, verbose_name='Final Test'),
         ),
         migrations.AlterField(
             model_name='enrollment',
             name='midterm',
-            field=models.FloatField(blank=True, null=True, verbose_name='Midterm'),
+            field=models.FloatField(
+                blank=True, null=True, verbose_name='Midterm'),
         ),
         migrations.AlterField(
             model_name='enrollment',
             name='minitest1',
-            field=models.FloatField(blank=True, null=True, verbose_name='Mini Test 1'),
+            field=models.FloatField(
+                blank=True, null=True, verbose_name='Mini Test 1'),
         ),
         migrations.AlterField(
             model_name='enrollment',
             name='minitest2',
-            field=models.FloatField(blank=True, null=True, verbose_name='Mini Test 2'),
+            field=models.FloatField(
+                blank=True, null=True, verbose_name='Mini Test 2'),
         ),
         migrations.AlterField(
             model_name='enrollment',
             name='minitest3',
-            field=models.FloatField(blank=True, null=True, verbose_name='Mini Test 3'),
+            field=models.FloatField(
+                blank=True, null=True, verbose_name='Mini Test 3'),
         ),
         migrations.AlterField(
             model_name='enrollment',
             name='minitest4',
-            field=models.FloatField(blank=True, null=True, verbose_name='Mini Test 4'),
+            field=models.FloatField(
+                blank=True, null=True, verbose_name='Mini Test 4'),
         ),
         migrations.CreateModel(
             name='Person',
             fields=[
                 ('person_id', models.AutoField(primary_key=True, serialize=False)),
-                ('role', models.CharField(choices=[('teacher', 'Teacher'), ('student', 'Student'), ('staff', 'Staff')], max_length=20, verbose_name='Role')),
+                ('role', models.CharField(choices=[('teacher', 'Teacher'), (
+                    'student', 'Student'), ('staff', 'Staff')], max_length=20, verbose_name='Role')),
                 ('full_name', models.CharField(max_length=100)),
                 ('dob', models.DateField(verbose_name='Date of Birth')),
-                ('phone_number', models.CharField(max_length=15, verbose_name='Phone Number')),
-                ('email', models.EmailField(max_length=254, verbose_name='Email Address')),
+                ('phone_number', models.CharField(
+                    max_length=15, verbose_name='Phone Number')),
+                ('email', models.EmailField(
+                    max_length=254, verbose_name='Email Address')),
                 ('address', models.CharField(max_length=255, verbose_name='Address')),
-                ('qualification', models.CharField(blank=True, max_length=100, null=True, verbose_name='Qualification')),
-                ('position', models.CharField(blank=True, max_length=100, null=True, verbose_name='Position')),
+                ('qualification', models.CharField(blank=True,
+                 max_length=100, null=True, verbose_name='Qualification')),
+                ('position', models.CharField(blank=True,
+                 max_length=100, null=True, verbose_name='Position')),
                 ('created_at', models.DateTimeField(auto_now_add=True)),
                 ('updated_at', models.DateTimeField(auto_now=True)),
-                ('user', models.OneToOneField(blank=True, null=True, on_delete=django.db.models.deletion.CASCADE, to=settings.AUTH_USER_MODEL)),
+                ('user', models.OneToOneField(blank=True, null=True,
+                 on_delete=django.db.models.deletion.CASCADE, to=settings.AUTH_USER_MODEL)),
             ],
             options={
                 'verbose_name': 'Person',
@@ -138,13 +153,17 @@ class Migration(migrations.Migration):
         migrations.CreateModel(
             name='ContentReadStatus',
             fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('content_type', models.CharField(choices=[('announcement', 'Announcement'), ('assignment', 'Assignment')], max_length=20, verbose_name='Content Type')),
+                ('id', models.BigAutoField(auto_created=True,
+                 primary_key=True, serialize=False, verbose_name='ID')),
+                ('content_type', models.CharField(choices=[('announcement', 'Announcement'), (
+                    'assignment', 'Assignment')], max_length=20, verbose_name='Content Type')),
                 ('content_id', models.IntegerField(verbose_name='Content ID')),
                 ('is_read', models.BooleanField(default=False)),
                 ('read_at', models.DateTimeField(blank=True, null=True)),
-                ('content_object_type', models.ForeignKey(blank=True, null=True, on_delete=django.db.models.deletion.CASCADE, to='contenttypes.contenttype')),
-                ('person', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='read_statuses', to='core.person', verbose_name='Student/Person')),
+                ('content_object_type', models.ForeignKey(blank=True, null=True,
+                 on_delete=django.db.models.deletion.CASCADE, to='contenttypes.contenttype')),
+                ('person', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE,
+                 related_name='read_statuses', to='core.person', verbose_name='Student/Person')),
             ],
             options={
                 'verbose_name': 'Content Read Status',
@@ -155,27 +174,32 @@ class Migration(migrations.Migration):
         migrations.AlterField(
             model_name='assignmentsubmission',
             name='student',
-            field=models.ForeignKey(limit_choices_to={'role': 'student'}, on_delete=django.db.models.deletion.CASCADE, related_name='submissions', to='core.person', verbose_name='Student'),
+            field=models.ForeignKey(limit_choices_to={'role': 'student'}, on_delete=django.db.models.deletion.CASCADE,
+                                    related_name='submissions', to='core.person', verbose_name='Student'),
         ),
         migrations.AlterField(
             model_name='clazz',
             name='staff',
-            field=models.ForeignKey(limit_choices_to={'role': 'staff'}, null=True, on_delete=django.db.models.deletion.SET_NULL, related_name='classes_managed', to='core.person', verbose_name='Assigned Staff'),
+            field=models.ForeignKey(limit_choices_to={'role': 'staff'}, null=True, on_delete=django.db.models.deletion.SET_NULL,
+                                    related_name='classes_managed', to='core.person', verbose_name='Assigned Staff'),
         ),
         migrations.AlterField(
             model_name='clazz',
             name='teacher',
-            field=models.ForeignKey(limit_choices_to={'role': 'teacher'}, null=True, on_delete=django.db.models.deletion.SET_NULL, related_name='classes_taught', to='core.person', verbose_name='Assigned Teacher'),
+            field=models.ForeignKey(limit_choices_to={'role': 'teacher'}, null=True, on_delete=django.db.models.deletion.SET_NULL,
+                                    related_name='classes_taught', to='core.person', verbose_name='Assigned Teacher'),
         ),
         migrations.AlterField(
             model_name='enrollment',
             name='student',
-            field=models.ForeignKey(limit_choices_to={'role': 'student'}, on_delete=django.db.models.deletion.CASCADE, related_name='enrollments', to='core.person', verbose_name='Student'),
+            field=models.ForeignKey(limit_choices_to={'role': 'student'}, on_delete=django.db.models.deletion.CASCADE,
+                                    related_name='enrollments', to='core.person', verbose_name='Student'),
         ),
         migrations.AlterField(
             model_name='feedback',
             name='student',
-            field=models.ForeignKey(limit_choices_to={'role': 'student'}, on_delete=django.db.models.deletion.CASCADE, related_name='feedbacks', to='core.person', verbose_name='Student'),
+            field=models.ForeignKey(limit_choices_to={
+                                    'role': 'student'}, on_delete=django.db.models.deletion.CASCADE, related_name='feedbacks', to='core.person', verbose_name='Student'),
         ),
         migrations.DeleteModel(
             name='DayOfWeek',
